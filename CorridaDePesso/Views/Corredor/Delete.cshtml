@@ -1,0 +1,48 @@
+﻿@model CorridaDePesso.Models.Corredor
+
+@{
+    ViewBag.Title = "Excluir Corredor";
+}
+
+<h2>Excluir Corredor</h2>
+
+
+<div>
+     <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nome)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PesoIcinial)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PesoIcinial)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PesoObjetivo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PesoObjetivo)
+        </dd>
+
+      
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Excluir" class="btn btn-default" /> |
+            @Html.ActionLink("Retornar", "Index")
+        </div>
+    }
+</div>
