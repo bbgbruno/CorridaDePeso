@@ -142,11 +142,11 @@ function RankingPerdaDePeso(resultado) {
 $(document).ready(function () {
 
   
-    $.get("/Corredor/GetCorredorPeso", {}, RankingPerdaDePeso, 'json');
+    $.get("/DashboardCorrida/GetCorredorPeso", {}, RankingPerdaDePeso, 'json');
 
     $(".LinkCorredor").on('click', function (e) {
         var id = $(this).attr('id');
-        $.get("/Corredor/GetPesagemCorredorGeral/"+id, {}, CarregaGrafico, 'json');
+        $.get("/DashboardCorrida/GetPesagemCorredorGeral/" + id, {}, CarregaGrafico, 'json');
     });
 
 });

@@ -12,7 +12,7 @@
     <div class="form-horizontal">
         <h4>Novo Corredor</h4>
         <hr />
-
+        @Html.HiddenFor(model => model.CorridaId)
         <div class="form-group">
             @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -29,7 +29,6 @@
             </div>
         </div>
 
-
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.PesoIcinial, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -38,15 +37,6 @@
                 @Html.ValidationMessageFor(model => model.PesoIcinial, "", new { @class = "text-danger" })
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PesoObjetivo, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PesoObjetivo, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PesoObjetivo, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
         
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

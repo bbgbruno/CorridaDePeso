@@ -6,7 +6,6 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -21,9 +20,18 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Corredores", "Index", "Corredor")</li>
-                    <li>@Html.ActionLink("Pesagems", "Index", "Pesagem")</li>
-                    
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Corredores", "Index", "Corredor")</li>
+                        <li>@Html.ActionLink("Pesagens", "Index", "Pesagem")</li>
+                        <li>@Html.ActionLink("Minhas Corridas", "Index", "Corrida")</li>
+                        <li>@Html.ActionLink("Resultados", "Index", "DashboardCorrida")</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Nova corrida", "Create", "Corrida")</li>
+                        <li>@Html.ActionLink("Corridas em andamento", "Index", "Corrida")</li>
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -36,7 +44,6 @@
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
     </div>
-
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

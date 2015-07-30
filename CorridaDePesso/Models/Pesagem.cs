@@ -15,5 +15,6 @@ namespace CorridaDePesso.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime Data { get; set; }
         public double Peso { get; set; }
+        public string UserId { get; set; }
     }
 }

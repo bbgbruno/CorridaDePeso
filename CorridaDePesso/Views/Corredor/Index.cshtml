@@ -1,16 +1,13 @@
-﻿@model IEnumerable<CorridaDePesso.Models.Corredor>
+﻿@using CorridaDePesso.Models;
+@model IEnumerable<CorridaDePesso.Models.Corredor>
+
 
 @{
     ViewBag.Title = "Lista de Corredores";
 }
 
 <h2>Lista de Corredores</h2>
-@if (Request.IsAuthenticated)
-{
-<p>
-    @Html.ActionLink("Novo Corredor", "Create")
-</p>
-}
+
 <table class="table">
     <tr>
         <th>
@@ -50,8 +47,15 @@
             @Html.DisplayFor(modelItem => item.PesoObjetivo)
         </td>
         <td>
-           @if (Request.IsAuthenticated)
-           {  @Html.ActionLink("Delete", "Delete", new { id=item.id }) }
+           @if (item.Aprovado)
+           {
+             @Html.ActionLink("Regeitar", "Regeitar", new { id = item.id }) 
+   
+           }
+            else
+           {
+             @Html.ActionLink("Aprovar", "Aprovar", new { id = item.id }) 
+           }
         </td>
     </tr>
 }

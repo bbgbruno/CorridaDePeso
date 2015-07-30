@@ -7,10 +7,10 @@
 <h2>Create</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Corrida</h4>
         <hr />
@@ -24,13 +24,26 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.UserId, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.TipoCorrida, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.UserId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
+                @Html.EnumDropDownListFor(model => model.TipoCorrida, new { @class = "form-control chosen-select-deselect" })
+                <p>@Html.ValidationMessageFor(model => model.TipoCorrida)</p>
             </div>
         </div>
-
+        <div class="form-group">
+            @Html.LabelFor(model => model.Evolucao, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.Evolucao, new { @class = "form-control chosen-select-deselect" })
+                <p>@Html.ValidationMessageFor(model => model.Evolucao)</p>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.FatorCalculo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FatorCalculo, new { htmlAttributes = new { @class = "form-control numero2Decimais" } })
+                @Html.ValidationMessageFor(model => model.FatorCalculo, "", new { @class = "text-danger" })
+            </div>
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Regras, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -72,9 +85,10 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Retornar", "Index","Home")
 </div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+     @Scripts.Render("~/bundles/mascara")
 }
+

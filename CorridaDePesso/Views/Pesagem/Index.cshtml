@@ -1,12 +1,13 @@
 ﻿@model IEnumerable<CorridaDePesso.Models.Pesagem>
+@using CorridaDePesso.Models;
 
 @{
-    ViewBag.Title = "Lista de Pesagems";
+    ViewBag.Title = "Lista de Pesagens";
 }
 
-<h2>Lista de Pesagems</h2>
-@if (Request.IsAuthenticated)
-{
+<h2>Lista de Pesagens</h2>
+@if (Session["Usuario"] != null && ((ApplicationUser)Session["Usuario"]).TipoUsuario == TipoConta.Administrador)
+{ 
 <p>
     @Html.ActionLink("Nova Pesagem", "Create")
 </p>

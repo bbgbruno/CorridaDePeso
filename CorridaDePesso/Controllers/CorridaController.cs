@@ -1,24 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using CorridaDePesso.Models;
+using Microsoft.AspNet.Identity;
+using CorridaDePesso.Controllers.HelperController;
+using Microsoft.AspNet.Identity.Owin;
+using System.Threading.Tasks;
 
 namespace CorridaDePesso.Controllers
 {
-    public class CorridaController : Controller
+    public class CorridaController : ApplicationController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+
+        private ApplicationUserManager _userManager;
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
         // GET: Corrida
         public ActionResult Index()
         {
-            return View(db.Corridas.ToList());
+            var userId = UsuarioSessao().Id;
+            return View(db.Corridas.Where(x => x.UserId==userId).ToList());
         }
+
+        // GET: Corrida
+        public ActionResult CorridasPublicas()
+        {
+            //return View(db.Corridas.Where(x => x.Publica == true).ToList());
+            return View("Index", db.Corridas.ToList());
+        }
+
 
         // GET: Corrida/Details/5
         public ActionResult Details(int? id)
@@ -45,16 +69,32 @@ namespace CorridaDePesso.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Titulo,UserId,Regras,DataInicio,DataFinal,EmailADM")] Corrida corrida)
+        public  async Task<ActionResult> Create(Corrida corrida)
         {
+            var user = db.Users.Where(dado => dado.UserName == corrida.EmailADM).FirstOrDefault();
             if (ModelState.IsValid)
             {
+                var passwordHash = new PasswordHasher();
+                string password = TratamentoString.CalcularMD5Hash(corrida.EmailADM).Substring(1, 8);
+                if (user == null)
+                {
+                   user = new ApplicationUser { UserName = corrida.EmailADM, Email = corrida.EmailADM, TipoUsuario = TipoConta.Administrador };
+                   var result = await UserManager.CreateAsync(user, password);
+                   if (!result.Succeeded)
+                   {
+                       ModelState.AddModelError("", result.Errors.ToString());
+                       if (!ModelState.IsValid)
+                          return View(corrida);
+                   }
+                       
+                }
+                corrida.UserId = user.Id;
                 db.Corridas.Add(corrida);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("CorridasPublicas");
             }
-
             return View(corrida);
         }
 
@@ -78,7 +118,7 @@ namespace CorridaDePesso.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Titulo,UserId,Regras,DataInicio,DataFinal,EmailADM")] Corrida corrida)
+        public ActionResult Edit(Corrida corrida)
         {
             if (ModelState.IsValid)
             {

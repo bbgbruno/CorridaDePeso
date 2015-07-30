@@ -10,14 +10,16 @@ using CorridaDePesso.Models;
 
 namespace CorridaDePesso.Controllers
 {
-    public class PesagemController : Controller
+    public class PesagemController : ApplicationController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        
 
         // GET: Pesagems
         public ActionResult Index()
         {
-            var pesagems = db.Pesagems.Include(p => p.Corredor);
+            var userId = UsuarioSessao().Id;
+            var pesagems = db.Pesagems.Where(dado => dado.UserId == userId).Include(p => p.Corredor);
             return View(pesagems.OrderBy(dado => new {dado.Corredor.Nome, dado.Data}).ToList());
         }
 
@@ -33,14 +35,15 @@ namespace CorridaDePesso.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,CorredorId,Data,Peso")] Pesagem pesagem)
+        public ActionResult Create(Pesagem pesagem)
         {
             if (ModelState.IsValid)
             {
+                var userId = UsuarioSessao().Id;
                 var corredor = db.Corredors.Find(pesagem.CorredorId);
                 corredor.PesoAtual = pesagem.Peso;
                 db.Entry(corredor).State = EntityState.Modified;
-                
+                pesagem.UserId = userId;
                 db.Pesagems.Add(pesagem);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -49,8 +52,6 @@ namespace CorridaDePesso.Controllers
             ViewBag.CorredorId = new SelectList(db.Corredors, "id", "Nome", pesagem.CorredorId);
             return View(pesagem);
         }
-
-       
 
         // GET: Pesagems/Delete/5
         public ActionResult Delete(int? id)

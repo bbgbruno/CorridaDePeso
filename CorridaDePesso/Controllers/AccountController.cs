@@ -9,11 +9,12 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CorridaDePesso.Models;
+using CorridaDePesso.Controllers.HelperController;
 
 namespace CorridaDePesso.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : ApplicationController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -79,7 +80,12 @@ namespace CorridaDePesso.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    {
+                        var user = UserManager.FindByEmail(model.Email);
+                        SalvarUsuarioSessao(user);
+                        return RedirectToAction("Index", "DashboardCorrida");
+                    }
+                    
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -203,8 +209,10 @@ namespace CorridaDePesso.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
+
                 if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
+                    string password = TratamentoString.CalcularMD5Hash(model.Email).Substring(1, 8);
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
                 }

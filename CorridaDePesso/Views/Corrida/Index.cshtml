@@ -1,33 +1,22 @@
-﻿@model IEnumerable<CorridaDePesso.Models.Corrida>
+﻿@using CorridaDePesso.Models;
+@model IEnumerable<CorridaDePesso.Models.Corrida>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Corridas em Andamento";
 }
 
-<h2>Index</h2>
+<h2>Corridas em andamento</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Titulo)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.UserId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Regras)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.DataInicio)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.DataFinal)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmailADM)
         </th>
         <th></th>
     </tr>
@@ -38,24 +27,18 @@
             @Html.DisplayFor(modelItem => item.Titulo)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.UserId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Regras)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.DataInicio)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.DataFinal)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.EmailADM)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Solicitar Inscrição", "Create", "Corredor", new { corridaId = item.Id }, null) |
+            @Html.ActionLink("Detalhes", "Details", new { id=item.Id }) |
+            @if (Session["Usuario"] != null && ((ApplicationUser)Session["Usuario"]).TipoUsuario == TipoConta.Administrador)
+            {
+                @Html.ActionLink("Resultados", "Index", "DashboardCorrida", new { id = item.Id }, null) 
+            }
         </td>
     </tr>
 }

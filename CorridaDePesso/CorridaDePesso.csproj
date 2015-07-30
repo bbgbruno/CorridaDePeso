@@ -159,11 +159,16 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Controllers\CorredorController.cs" />
     <Compile Include="Controllers\CorridaController.cs" />
+    <Compile Include="Controllers\DashboardCorridaController.cs" />
+    <Compile Include="Controllers\Helppers\TratamentoString.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PesagemController.cs" />
+    <Compile Include="Email\NotificaPorEmail.cs" />
+    <Compile Include="Email\SendGridMailer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -193,6 +198,7 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.Mascaras.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -247,6 +253,8 @@
     <Content Include="Views\Corrida\Details.cshtml" />
     <Content Include="Views\Corrida\Edit.cshtml" />
     <Content Include="Views\Corrida\Index.cshtml" />
+    <Content Include="Views\DashboardCorrida\Index.cshtml" />
+    <Content Include="Views\Corredor\EnvioConfirmado.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -255,7 +263,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <PropertyGroup>
