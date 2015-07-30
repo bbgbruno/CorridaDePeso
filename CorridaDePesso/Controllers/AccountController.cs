@@ -400,6 +400,7 @@ namespace CorridaDePesso.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
+            RemoverUsuarioLogado();
             return RedirectToAction("Index", "Home");
         }
 

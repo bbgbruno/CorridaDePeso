@@ -67,8 +67,8 @@ namespace CorridaDePesso.Controllers
             var retorno = new
             {
                 Chave = corredores.Select(desp => desp.Nome).ToArray(),
-                Valor = corredores.Select(desp => new { name = " Ja Perdeu " + desp.Nome, y = (desp.PesoIcinial - desp.PesoAtual) }).ToArray(),
-                Dado = corredores.Select(desp => new { name = " Falta Perde " + desp.Nome, y = (desp.PesoIcinial - desp.PesoObjetivo) - (desp.PesoIcinial - desp.PesoAtual) }).ToArray()
+                Valor = corredores.Select(desp => new { name = " Já Perdeu ", y = (desp.PesoIcinial - desp.PesoAtual) }).ToArray(),
+                Dado  = corredores.Select(desp => new { name = " Objetivo ", y = (desp.PesoIcinial - desp.PesoObjetivo) }).ToArray()
             };
 
             return Json(new { Data = retorno }, "json", Encoding.UTF8, JsonRequestBehavior.AllowGet);

@@ -98,16 +98,16 @@ function RankingPerdaDePeso(resultado) {
           },
         tooltip: {
             headerFormat: '<span style="font-size:10px">{point.key}</span><br />',
-            pointFormat: '<span style="color:{series.color};padding:0">Peso: </span>' +
-                '<span style="padding:0"><b>{point.y:.2f} kg</b></span>',
+            pointFormat:  '<span style="color:{series.color};padding:0">Peso: </span>' +
+                          '<span style="padding:0"><b>{point.y:.2f} kg</b></span>',
             shared: true,
             useHTML: true
         },
         plotOptions: {
             column: {
                 pointPadding: 0.2,
-                borderWidth: 0,
-                stacking: 'percent'
+                borderWidth: 0
+
             },
             series: {
                 cursor: 'pointer',
