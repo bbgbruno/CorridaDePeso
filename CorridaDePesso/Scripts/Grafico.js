@@ -141,8 +141,9 @@ function RankingPerdaDePeso(resultado) {
 
 $(document).ready(function () {
 
-  
-    $.get("/DashboardCorrida/GetCorredorPeso", {}, RankingPerdaDePeso, 'json');
+    var corridaid = $("#Corrida_Id").val()
+    console.log(corridaid);
+    $.get("/DashboardCorrida/GetCorredorPeso/" + corridaid, {}, RankingPerdaDePeso, 'json');
 
     $(".LinkCorredor").on('click', function (e) {
         var id = $(this).attr('id');

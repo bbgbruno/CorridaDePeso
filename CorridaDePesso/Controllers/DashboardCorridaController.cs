@@ -12,9 +12,9 @@ namespace CorridaDePesso.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        public ActionResult Index()
+        public ActionResult Index(int corridaId)
         {
-            return View(db.Corredors.Where(x => x.Aprovado==true).OrderByDescending(dado => dado.PesoIcinial - dado.PesoAtual ).ToList());
+            return View(db.Corredors.Where(x => x.Aprovado==true && x.Corrida.Id==corridaId ).OrderByDescending(dado => dado.PesoIcinial - dado.PesoAtual ).ToList());
         }
 
         [HttpGet]
@@ -60,9 +60,9 @@ namespace CorridaDePesso.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetCorredorPeso()
+        public JsonResult GetCorredorPeso(int id)
         {
-            var corredores = db.Corredors.Where(x => x.Aprovado == true).Select(dado => new { dado.Nome, dado.PesoIcinial, dado.PesoAtual, dado.PesoObjetivo }).OrderByDescending(x => (x.PesoIcinial - x.PesoAtual)).ToList();
+            var corredores = db.Corredors.Where(x => x.Aprovado == true && x.Corrida.Id==id ).Select(dado => new { dado.Nome, dado.PesoIcinial, dado.PesoAtual, dado.PesoObjetivo }).OrderByDescending(x => (x.PesoIcinial - x.PesoAtual)).ToList();
 
             var retorno = new
             {

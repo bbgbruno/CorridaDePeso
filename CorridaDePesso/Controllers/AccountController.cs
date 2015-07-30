@@ -83,7 +83,7 @@ namespace CorridaDePesso.Controllers
                     {
                         var user = UserManager.FindByEmail(model.Email);
                         SalvarUsuarioSessao(user);
-                        return RedirectToAction("Index", "DashboardCorrida");
+                        return RedirectToAction("Index", "Corrida");
                     }
                     
                 case SignInStatus.LockedOut:
