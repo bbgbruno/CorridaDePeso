@@ -24,10 +24,13 @@ namespace CorridaDePesso.Controllers
         }
 
         // GET: Pesagems/Create
-        public ActionResult Create()
+        public ActionResult Create(int corridaId)
         {
-            ViewBag.CorredorId = new SelectList(db.Corredors, "id", "Nome");
-            return View();
+            var userId = UsuarioSessao().Id;
+            ViewBag.CorredorId = new SelectList(db.Corredors.Where(dado => dado.Corrida.Id==corridaId), "id", "Nome");
+            var pesagem = new Pesagem();
+            pesagem.CorridaId = corridaId;
+            return View(pesagem);
         }
 
         // POST: Pesagems/Create

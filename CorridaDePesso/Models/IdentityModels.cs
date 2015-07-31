@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace CorridaDePesso.Models
 {
@@ -44,5 +45,6 @@ namespace CorridaDePesso.Models
         public System.Data.Entity.DbSet<CorridaDePesso.Models.Pesagem> Pesagems { get; set; }
 
         public System.Data.Entity.DbSet<CorridaDePesso.Models.Corrida> Corridas { get; set; }
+
     }
 }

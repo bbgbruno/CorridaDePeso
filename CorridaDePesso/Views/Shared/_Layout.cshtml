@@ -23,13 +23,12 @@
                     @if (Request.IsAuthenticated)
                     {
                         <li>@Html.ActionLink("Corredores", "Index", "Corredor")</li>
-                        <li>@Html.ActionLink("Pesagens", "Index", "Pesagem")</li>
                         <li>@Html.ActionLink("Minhas Corridas", "index", "Corrida")</li>
                     }
                     else
                     {
                         <li>@Html.ActionLink("Nova corrida", "Create", "Corrida")</li>
-                        <li>@Html.ActionLink("Corridas em andamento", "Index", "Corrida")</li>
+                        <li>@Html.ActionLink("Corridas em andamento", "CorridasPublicas", "Corrida")</li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")
