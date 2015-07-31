@@ -1,0 +1,44 @@
+﻿@model IEnumerable<CorridaDePesso.Models.Corredor>
+@{
+    ViewBag.Title = "Corredor de Peso";
+}
+<br />
+<div class="row">
+    <div class="row col-md-3">
+        <div class="corredores">
+            @foreach (var item in Model)
+            {
+                <div class="corredor">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img src="@item.urlImagemCorredor" alt="140X140" class="img-circle" style="width:80px">
+                            </div>
+                            <div class="col-md-8">
+                                <h4 style="margin-top:0; margin-bottom:0"> <a href="#" id="@item.id" class="LinkCorredor">@item.Nome  </a></h4>
+                                <strong>Já Perdido: @item.PesoPerdido</strong><br />
+                                <strong>Falta Perder : @item.FaltaPerder</strong><br />
+                                Peso Inicial: @item.PesoIcinial <br />
+                                Peso Objetivo: @item.PesoObjetivo <br />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div id="GraficoDePeso" class="col-md-9">
+    </div>
+</div>
+   @Html.HiddenFor(model => model.FirstOrDefault().Corrida.Id)
+<br />
+<div class="row">
+</div>
+<div class="row">
+    <div id="InfoCorredor" class="col-lg-8">
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/Grafico")
+}
