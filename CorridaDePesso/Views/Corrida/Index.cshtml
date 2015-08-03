@@ -1,48 +1,90 @@
 ﻿@using CorridaDePesso.Models;
 @model IEnumerable<CorridaDePesso.Models.Corrida>
-
 @{
     ViewBag.Title = "Corridas em Andamento";
 }
-
-<h2>Corridas em andamento</h2>
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Titulo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DataInicio)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DataFinal)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Titulo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DataInicio)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DataFinal)
-        </td>
-        <td>
-            @Html.ActionLink("Solicitar Inscrição", "Create", "Corredor", new { corridaId = item.Id }, null) |
-            @Html.ActionLink("Detalhes", "Details", new { id=item.Id }) |
-           
-            @if (Session["Usuario"] != null && ((ApplicationUser)Session["Usuario"]).TipoUsuario == TipoConta.Administrador)
-            {
-               @Html.ActionLink("Incluir Pesagem","Create", "Pesagem", new { corridaId = item.Id }, null)    <span>|</span>
-               @Html.ActionLink("Resultados", "Index", "DashboardCorrida", new { corridaId = item.Id }, null) <span>|</span>
-            }
-        </td>
-    </tr>
+@section banner{
+    <div id="banner" class="row">
+        <div class="col-lg-4 col-lg-pull-1 pull-right">
+            <ul>
+                <li>
+                    <h1>1. <small>cadastre sua corrida</small></h1>
+                    Tincidunt integer eu augue augue nunc elit dolor, luctus placerat scelerisque euismod, iaculis eu lacus nunc mi elit, vehicula ut laoreet ac, aliquam sit amet justo nunc tempor, metus vel.
+                </li>
+                <li>
+                    <h1>2. <small>defina as regras</small></h1>
+                    Tincidunt integer eu augue augue nunc elit dolor, luctus placerat scelerisque euismod, iaculis eu lacus nunc mi elit, vehicula ut laoreet ac, aliquam sit amet justo nunc tempor, metus vel.
+                </li>
+                <li>
+                    <h1>3. <small>acompanhe resultados</small></h1>
+                    Tincidunt integer eu augue augue nunc elit dolor, luctus placerat scelerisque euismod, iaculis eu lacus nunc mi elit, vehicula ut laoreet ac, aliquam sit amet justo nunc tempor, metus vel.
+                </li>
+            </ul>
+        </div>
+    </div>
 }
 
+<h2>CORRIDAS EM ANDAMENTO</h2>
+<table class="table">
+    <tr>
+        <td colspan="3">
+            <h3>CORRIDA DA IVIA</h3>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="row">
+                <div class="col-lg-3">
+                    <h4 style="margin:0">
+                        <small>
+                            começou em 01/01/2015 
+                        </small><br />
+                        <small>
+                            termina em 01/03/2015
+                        </small><br />
+                        10 <small>participantes</small>
+                    </h4>
+                </div>
+                <div class="col-lg-1">
+                    <img src="~/Img/id53.jpg" class="img-circle img-responsive" alt="" />
+                </div>
+                <div class="col-lg-3">
+                    <h4 style="margin:0">
+                        Bruno Borges <br />
+                        <small>está liderando a corrida</small> <br />
+                        <small>pois perdeu <strong>5.5 kg</strong></small>
+                    </h4>
+                </div>
+                <div class="col-lg-3">
+                    <button class="btn btn-lg btn-success">Quero participar desta corrida</button>
+                </div>
+            </div>
+
+
+        </td>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Titulo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataInicio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataFinal)
+            </td>
+            <td>
+                @Html.ActionLink("Solicitar Inscrição", "Create", "Corredor", new { corridaId = item.Id }, null) |
+                @Html.ActionLink("Detalhes", "Details", new { id = item.Id }) |
+
+                @if (Session["Usuario"] != null && ((ApplicationUser)Session["Usuario"]).TipoUsuario == TipoConta.Administrador)
+                {
+                    @Html.ActionLink("Incluir Pesagem", "Create", "Pesagem", new { corridaId = item.Id }, null)    <span>|</span>
+                    @Html.ActionLink("Resultados", "Index", "DashboardCorrida", new { corridaId = item.Id }, null) <span>|</span>
+                }
+            </td>
+        </tr>
+    }
 </table>
