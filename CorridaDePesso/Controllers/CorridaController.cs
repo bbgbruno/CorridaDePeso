@@ -107,10 +107,12 @@ namespace CorridaDePesso.Controllers
             var user = db.Users.Where(dado => dado.UserName == corrida.EmailADM).FirstOrDefault();
             if (ModelState.IsValid)
             {
+                string password = "";
+
                 if (user == null)
                 {
                     var passwordHash = new PasswordHasher();
-                    string password = TratamentoString.CalcularMD5Hash(corrida.EmailADM).Substring(1, 8);
+                    password = TratamentoString.CalcularMD5Hash(corrida.EmailADM).Substring(1, 8);
                     user = new ApplicationUser { UserName = corrida.EmailADM, Email = corrida.EmailADM, TipoUsuario = TipoConta.Administrador };
                     var result = await UserManager.CreateAsync(user, password);
                     if (!result.Succeeded)
