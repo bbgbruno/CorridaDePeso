@@ -21,7 +21,7 @@ namespace CorridaDePesso.Email
                                                 "necessita de manutenção por ter atingido a sua quilometragem.");
             message.To.Add(to);
             message.Body = html;
-            message.Subject = "GestorMotors Informa: Um Item de manuteção precisa ser trocado";
+            message.Subject = "Corrida de Peso Informa: Um Item de manuteção precisa ser trocado";
             message.IsBodyHtml = true;
 
             return send(message);
@@ -39,7 +39,7 @@ namespace CorridaDePesso.Email
 
             message.To.Add(to);
             message.Body = html;
-            message.Subject = "GestorMotors Informa: Um Aviso do GestorMotors";
+            message.Subject = "Corrida de Peso Informa: Um Aviso do Corrida de Peso";
             message.IsBodyHtml = true;
 
             return send(message);
@@ -57,7 +57,7 @@ namespace CorridaDePesso.Email
 
             message.To.Add(to);
             message.Body = html;
-            message.Subject = "GestorMotors Informa: Solicitação de Contato Via Portal GestoMotors.Net";
+            message.Subject = "Corrida de Peso Informa: Solicitação de Contato Via Portal GestoMotors.Net";
             message.IsBodyHtml = true;
 
             return send(message);
@@ -69,7 +69,7 @@ namespace CorridaDePesso.Email
 
             get
             {
-                return "http://gestormotors.azurewebsites.net/images/logo.png";
+                return "http://Corrida de Peso.azurewebsites.net/images/logo.png";
             }
 
         }
@@ -80,13 +80,13 @@ namespace CorridaDePesso.Email
             MailMessage message = new MailMessage();
 
             var html = HtmlTemplate();
-            var mensagem = "conforme seu interesse em participar do sistema GestorMotors, segue seus dados de acesso." + "<p><b>Usuário:</b> " + Usuario + "</p>" + "<p><b>Senha: </b>" + NovaSenha + "  </p>";
+            var mensagem = " você acaba de criar um pista de competição! Agora é só convidar seus amigos para começar a corrida" + "<p><b>Usuário:</b> " + Usuario + "</p>" + "<p><b>Senha: </b>" + NovaSenha + "  </p>";
             html = html.Replace("{{mensagem}}", mensagem);
             html = html.Replace("{{Link_Logo}}", ImagePath);
 
             message.To.Add(to);
             message.Body = html;
-            message.Subject = "GestorMotors Informa: Seu Acesso ao Sistema";
+            message.Subject = "Corrida de Peso Informa: Seu Acesso ao Sistema";
             message.IsBodyHtml = true;
 
             return send(message);
@@ -103,7 +103,7 @@ namespace CorridaDePesso.Email
 
             message.To.Add(to);
             message.Body = html;
-            message.Subject = "GestorMotors Informa: Sua senha foi resetada";
+            message.Subject = "Corrida de Peso Informa: Sua senha foi resetada";
             message.IsBodyHtml = true;
 
             return send(message);
@@ -163,9 +163,9 @@ namespace CorridaDePesso.Email
                   </tr>
                   <tr>
                      <td colspan='3' style='font-family: Georgia; color: #444;'>
-                        <h1 style='font-size: 50px; text-align: center; color: #000; line-height: 120%; margin: 10px  0; font-weight: normal; text-align: center;'>Aviso do GestorMotors</h1>
+                        <h1 style='font-size: 50px; text-align: center; color: #000; line-height: 120%; margin: 10px  0; font-weight: normal; text-align: center;'>Aviso do Corrida de Peso</h1>
                         <p>Olá, {{mensagem}}</p>
-                        <p><b><i>O sistema GestorMotors</i></b> - É um sistema em nuvens para o gerenciamento de frota de veículos. Ele possibilita ao usuário ter controle sobre os abastecimento, 
+                        <p><b><i>O sistema Corrida de Peso</i></b> - É um sistema em nuvens para o gerenciamento de frota de veículos. Ele possibilita ao usuário ter controle sobre os abastecimento, 
                             despesas, manutenções preventivas, trocas de óleos, licenciamento anual, controle de habilitação de motoristas, controle de saídas e retorno de veículos e 
                             vários outros serviços realizados no veículo. 
                             As informações sobre seu veículo são apresentadas através de relatórios e gráficos, tendo as informações de média de Km/litro, gastos mensais, médias por dia, 
@@ -177,13 +177,13 @@ namespace CorridaDePesso.Email
                   <tr>
                      <td style='font-family: Georgia; text-align: center; padding: 0px  0px  40px  0px;' valign='top'>
                         <p style='font-size: 12px text-align: center;;'>Para maiores informações
-                           Para maiores informações acesse nosso site: <a href='http://gestormotors.net'>http://gestormotors.net</a>
+                           Para maiores informações acesse nosso site: <a href='http://Corrida de Peso.net'>http://Corrida de Peso.net</a>
                         </p>
                      </td>
                   </tr>
                   <tr>
                      <td colspan='3' style='background-color: #ffffff; text-align: center; border-top: 1px  solid  #ccc; padding: 20px; font-size: 11px; line-height: 100%; font-family: Arial;'>
-                        <p>GestorMotors é um produto da <a href='http://tecsoft.info/'>http://tecsoft.info/</a></p>
+                        <p>Corrida de Peso é um produto da <a href='http://tecsoft.info/'>http://tecsoft.info/</a></p>
                         <p> </p>
                      </td>
                   </tr>
@@ -203,14 +203,14 @@ namespace CorridaDePesso.Email
                   </tr>
                   <tr>
                      <td colspan='3' style='font-family: Georgia; color: #444;'>
-                        <h1 style='font-size: 50px; text-align: center; color: #000; line-height: 120%; margin: 10px  0; font-weight: normal; text-align: center;'>Aviso do GestorMotors</h1>
+                        <h1 style='font-size: 50px; text-align: center; color: #000; line-height: 120%; margin: 10px  0; font-weight: normal; text-align: center;'>Aviso do Corrida de Peso</h1>
                         <p><b>Olá, Sua senha foi resetada com sucesso, sua senha agora é:</b> {{novasenha}}</p>
                         <p>
                         Você está recebendo este e-mail porque sua senha foi resetada,
-                        por favor acesse o nosso site para realizar o login: <a href='http://gestormotors.net'>http://gestormotors.net</a>
+                        por favor acesse o nosso site para realizar o login: <a href='http://Corrida de Peso.net'>http://Corrida de Peso.net</a>
                         </p>
                         <p> </p>
-                        <p><b><i>O sistema GestorMotors</i></b> - É um sistema em nuvens para o gerenciamento de frota de veículos. Ele possibilita ao usuário ter controle sobre os abastecimento, 
+                        <p><b><i>O sistema Corrida de Peso</i></b> - É um sistema em nuvens para o gerenciamento de frota de veículos. Ele possibilita ao usuário ter controle sobre os abastecimento, 
                             despesas, manutenções preventivas, trocas de óleos, licenciamento anual, controle de habilitação de motoristas, controle de saídas e retorno de veículos e 
                             vários outros serviços realizados no veículo. 
                             As informações sobre seu veículo são apresentadas através de relatórios e gráficos, tendo as informações de média de Km/litro, gastos mensais, médias por dia, 
@@ -221,7 +221,7 @@ namespace CorridaDePesso.Email
                   </tr>
                   <tr>
                      <td style='font-family: Georgia; padding: 0px  0px  40px  0px;' valign='top'>
-                        <p style='font-size: 12px;'>GestorMotors é um produto da <a href='http://tecsoft.info/'>http://tecsoft.info/</a></p>
+                        <p style='font-size: 12px;'>Corrida de Peso é um produto da <a href='http://tecsoft.info/'>http://tecsoft.info/</a></p>
                      </td>
                   </tr>
                </tbody>

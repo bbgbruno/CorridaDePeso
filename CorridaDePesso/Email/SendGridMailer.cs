@@ -2,25 +2,24 @@
 using System.Net;
 using System.Net.Mail;
 using System.Linq;
-//using SendGrid;
+using SendGrid;
 
 
 namespace CorridaDePesso.Email
 {
     public class SendGridMailer
     {
-       /* private static string USER = "azure_62bd9278bd43990bcee755772cfce0be@azure.com";
+        private static string USER = "azure_62bd9278bd43990bcee755772cfce0be@azure.com";
         private static string PASS = "db0wfoap";
-        */
+        
         protected static bool send(MailMessage message)
         {
-          /*  var credentials = new NetworkCredential(USER, PASS);
+            var credentials = new NetworkCredential(USER, PASS);
             var transportWeb = new Web(credentials);
-            transportWeb.Deliver(ParserMassegeSendGrid(message));*/
+            transportWeb.DeliverAsync(ParserMassegeSendGrid(message));
             return true;
         }
 
-        /*
         private static ISendGrid ParserMassegeSendGrid(MailMessage message)
         {
 
@@ -36,7 +35,7 @@ namespace CorridaDePesso.Email
 
             return sendGridMenssage;
             
-        }   */
+        }   
     }
      
 }

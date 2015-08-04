@@ -9,6 +9,7 @@ using CorridaDePesso.Controllers.HelperController;
 using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using CorridaDePesso.Email;
 
 namespace CorridaDePesso.Controllers
 {
@@ -123,9 +124,12 @@ namespace CorridaDePesso.Controllers
                 corrida.UserId = user.Id;
                 db.Corridas.Add(corrida);
                 db.SaveChanges();
+                NotificaPorEmail.NotificarNovoCadastro(user.Email, password, user.Email);
                 return RedirectToAction("CorridasPublicas");
             }
+            
             return View(corrida);
+
         }
 
         // GET: Corrida/Edit/5
