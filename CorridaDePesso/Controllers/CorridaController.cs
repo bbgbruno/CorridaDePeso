@@ -8,9 +8,16 @@ using Microsoft.AspNet.Identity;
 using CorridaDePesso.Controllers.HelperController;
 using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace CorridaDePesso.Controllers
 {
+    public class Grafico
+    {
+        public List<string> categories = new List<string>();
+        public Dictionary<string[], string[]> series = new Dictionary<string[], string[]>();
+    }
+
     public class CorridaController : ApplicationController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -33,14 +40,37 @@ namespace CorridaDePesso.Controllers
         public ActionResult Index()
         {
             var userId = UsuarioSessao().Id;
-            return View(db.Corridas.Where(x => x.UserId==userId).ToList());
+            var corridas = RetornarListadeCorridas(db.Corridas.Where(x => x.UserId == userId).ToList());
+            return View(corridas);
         }
 
         // GET: Corrida
         public ActionResult CorridasPublicas()
         {
-            //return View(db.Corridas.Where(x => x.Publica == true).ToList());
-            return View("Index", db.Corridas.ToList());
+        
+            var corridasPublicas = db.Corridas.ToList();
+            var corridas = RetornarListadeCorridas(corridasPublicas);
+            return View("Index", corridas);
+        }
+
+        private IEnumerable<CorridaViewModel> RetornarListadeCorridas(List<Corrida> corridasPublicas)
+        {
+            foreach (var item in corridasPublicas)
+            {
+                var corredores = db.Corredors.Where(dado => dado.CorridaId == item.Id);
+                if (corredores.Count() > 0)
+                {
+                    yield return new CorridaViewModel
+                    {
+                        Id = item.Id,
+                        Titulo = item.Titulo,
+                        DataInicial = item.DataInicio,
+                        DataFinal = item.DataFinal,
+                        NumeroCorredores = corredores.Count(),
+                        CorredorLider = corredores.OrderByDescending(dado => (dado.PesoIcinial - dado.PesoAtual)).FirstOrDefault()
+                    };
+                }
+            }
         }
 
 
@@ -71,24 +101,24 @@ namespace CorridaDePesso.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public  async Task<ActionResult> Create(Corrida corrida)
+        public async Task<ActionResult> Create(Corrida corrida)
         {
             var user = db.Users.Where(dado => dado.UserName == corrida.EmailADM).FirstOrDefault();
             if (ModelState.IsValid)
             {
-                var passwordHash = new PasswordHasher();
-                string password = TratamentoString.CalcularMD5Hash(corrida.EmailADM).Substring(1, 8);
                 if (user == null)
                 {
-                   user = new ApplicationUser { UserName = corrida.EmailADM, Email = corrida.EmailADM, TipoUsuario = TipoConta.Administrador };
-                   var result = await UserManager.CreateAsync(user, password);
-                   if (!result.Succeeded)
-                   {
-                       ModelState.AddModelError("", result.Errors.ToString());
-                       if (!ModelState.IsValid)
-                          return View(corrida);
-                   }
-                       
+                    var passwordHash = new PasswordHasher();
+                    string password = TratamentoString.CalcularMD5Hash(corrida.EmailADM).Substring(1, 8);
+                    user = new ApplicationUser { UserName = corrida.EmailADM, Email = corrida.EmailADM, TipoUsuario = TipoConta.Administrador };
+                    var result = await UserManager.CreateAsync(user, password);
+                    if (!result.Succeeded)
+                    {
+                        ModelState.AddModelError("", result.Errors.ToString());
+                        if (!ModelState.IsValid)
+                            return View(corrida);
+                    }
+
                 }
                 corrida.UserId = user.Id;
                 db.Corridas.Add(corrida);

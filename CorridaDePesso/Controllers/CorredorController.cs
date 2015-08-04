@@ -1,27 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using CorridaDePesso.Models;
-using System.Text;
+using Microsoft.AspNet.Identity;
+using CorridaDePesso.Controllers.HelperController;
+using Microsoft.AspNet.Identity.Owin;
+using System.Threading.Tasks;
 
 namespace CorridaDePesso.Controllers
 {
-    public class Grafico
-    {
-        public List<string> categories = new List<string>();
-        public Dictionary<string[], string[]> series = new Dictionary<string[], string[]>();
-    }
-
+  
     public class CorredorController : ApplicationController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationUserManager _userManager;
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
         
-                        
         // GET: Corredor
         public ActionResult Index()
         {
@@ -40,6 +47,7 @@ namespace CorridaDePesso.Controllers
         // POST: Corredor/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+    
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Corredor corredor)
@@ -58,10 +66,26 @@ namespace CorridaDePesso.Controllers
             return View(corredor);
         }
 
-        
-        public ActionResult Aprovar(int id)
+        public  async Task<ActionResult> Aprovar(int id)
         {
             var corredor = db.Corredors.Find(id);
+            var user = db.Users.Where(dado => dado.UserName == corredor.Email).FirstOrDefault();
+            
+            if (user == null)
+            {
+                var passwordHash = new PasswordHasher();
+                string password = TratamentoString.CalcularMD5Hash(corredor.Email).Substring(1, 8);
+                   
+                user = new ApplicationUser { UserName = corredor.Email, Email = corredor.Email, TipoUsuario = TipoConta.Corredor };
+                var result = await UserManager.CreateAsync(user, password);
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError("", result.Errors.ToString());
+                    if (!ModelState.IsValid)
+                        return RedirectToAction("index");
+                }
+            }
+            
             corredor.Aprovado = true;
             db.Entry(corredor).State = EntityState.Modified;
             db.SaveChanges();
@@ -76,6 +100,7 @@ namespace CorridaDePesso.Controllers
             db.SaveChanges();
             return RedirectToAction("index");
         }
+
         private double RetornarPesoObjetivo(Corrida corrida, double pesoAtual)
         {
             double valorObjetivo = 0;
