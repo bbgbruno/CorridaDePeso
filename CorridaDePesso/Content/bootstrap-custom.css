@@ -42,6 +42,11 @@ h1, h2, h3 {
     padding: 0;
 }
 
+.corrida-andamento{
+    display:flex;
+    align-items: center;
+}
+
 
 .navbar-inverse {
     background-color: #E57E3E;

@@ -201,6 +201,7 @@
     <Content Include="fonts\BonvenoCF-Light-webfont.eot" />
     <Content Include="fonts\BonvenoCF-Light-webfont.ttf" />
     <Content Include="fonts\BonvenoCF-Light-webfont.woff" />
+    <None Include="Properties\PublishProfiles\corridadepeso.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Grafico.js" />
     <Content Include="Scripts\highcharts.js" />
