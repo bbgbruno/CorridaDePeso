@@ -16,7 +16,9 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <img src="~/Img/logo.png" alt="Alternate Text" />
+                <a href="@Url.Action("CorridasPublicas","Corrida")">
+                    <img src="~/Img/logo.png" alt="Alternate Text" />
+                </a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -28,7 +30,7 @@
                     else
                     {
                         @*<li>@Html.ActionLink("Nova corrida", "Create", "Corrida")</li>
-                        <li>@Html.ActionLink("Corridas em andamento", "CorridasPublicas", "Corrida")</li>*@
+                            <li>@Html.ActionLink("Corridas em andamento", "CorridasPublicas", "Corrida")</li>*@
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")

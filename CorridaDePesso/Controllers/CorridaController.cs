@@ -105,14 +105,16 @@ namespace CorridaDePesso.Controllers
         public async Task<ActionResult> Create(Corrida corrida)
         {
             var user = db.Users.Where(dado => dado.UserName == corrida.EmailADM).FirstOrDefault();
+            var pass = string.Empty;
+
             if (ModelState.IsValid)
             {
                 if (user == null)
                 {
                     var passwordHash = new PasswordHasher();
-                    string password = TratamentoString.CalcularMD5Hash(corrida.EmailADM).Substring(1, 8);
+                    pass = TratamentoString.CalcularMD5Hash(corrida.EmailADM).Substring(1, 8);
                     user = new ApplicationUser { UserName = corrida.EmailADM, Email = corrida.EmailADM, TipoUsuario = TipoConta.Administrador };
-                    var result = await UserManager.CreateAsync(user, password);
+                    var result = await UserManager.CreateAsync(user, pass);
                     if (!result.Succeeded)
                     {
                         ModelState.AddModelError("", result.Errors.ToString());
@@ -124,7 +126,7 @@ namespace CorridaDePesso.Controllers
                 corrida.UserId = user.Id;
                 db.Corridas.Add(corrida);
                 db.SaveChanges();
-                NotificaPorEmail.NotificarNovoCadastro(user.Email, password, user.Email);
+                NotificaPorEmail.NotificarNovoCadastro(user.Email, pass, user.Email);
                 return RedirectToAction("CorridasPublicas");
             }
             

@@ -4,7 +4,10 @@
     ViewBag.Title = "Nova Corrida";
 }
 
-<h2>Inoforme os dados para a nova Corrida</h2>
+<h2>
+    Vamos lá! <br />
+    <small>Hora de criar uma nova corrída \o/</small>
+</h2>
 
 
 @using (Html.BeginForm())
@@ -14,80 +17,143 @@
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Titulo, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Titulo, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.TipoCorrida, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.TipoCorrida, new { @class = "form-control chosen-select-deselect" })
-                <p>@Html.ValidationMessageFor(model => model.TipoCorrida)</p>
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Evolucao, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.Evolucao, new { @class = "form-control chosen-select-deselect" })
-                <p>@Html.ValidationMessageFor(model => model.Evolucao)</p>
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.FatorCalculo, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.FatorCalculo, new { htmlAttributes = new { @class = "form-control numero2Decimais" } })
-                @Html.ValidationMessageFor(model => model.FatorCalculo, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Regras, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Regras, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Regras, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        <div class="col-md-6">
+            <h3>1. MEDIÇÃO DA CORRIDA</h3>
+            <hr />
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.DataInicio, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DataInicio, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DataInicio, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label>
+                        <span class="glyphicon glyphicon-question-sign"></span>
+                        Título da corrida
+                    </label>
+                    <small>dê um nome legal pra sua corrida!</small>
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.Titulo, new { htmlAttributes = new { @class = "form-control", autofocus = true } })
+                    @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label>
+                        <span class="glyphicon glyphicon-question-sign"></span>
+                        Objetivo da corrida
+                    </label>
+                    <small>perder ou ganhar peso! Você é quem manda</small>
+                </div>
+                <div class="col-md-12">
+                    @Html.EnumDropDownListFor(model => model.TipoCorrida, new { @class = "form-control chosen-select-deselect" })
+                    <p>@Html.ValidationMessageFor(model => model.TipoCorrida)</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label>
+                        <span class="glyphicon glyphicon-question-sign"></span>
+                        Como será medido o objetivo?
+                    </label>
+                    <small>Percentual ou uma quantidade de peso fixo?</small> <br />
+                    <small>Ex. o corredor deve perder 5% do peso atual ou deverá perder 5Kg ao final da corrida</small>
+                </div>
+                <div class="col-md-12">
+                    @Html.EnumDropDownListFor(model => model.Evolucao, new { @class = "form-control chosen-select-deselect" })
+                    <p>@Html.ValidationMessageFor(model => model.Evolucao)</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label>
+                        <span class="glyphicon glyphicon-question-sign"></span>
+                        Valor da medida para o objetivo?
+                    </label> <br />
+                    <small>Se você escolheu "Percentual" no campo anterior o valor será considerado como %</small><br />
+                    <small>Se você escolheu "Valor Fixo" no campo anterior o valor será considerado como Kg</small>
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.FatorCalculo, new { htmlAttributes = new { @class = "form-control numero2Decimais" } })
+                    @Html.ValidationMessageFor(model => model.FatorCalculo, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DataFinal, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DataFinal, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DataFinal, "", new { @class = "text-danger" })
+        <div class="col-md-6">
+            <h3>2. DATAS E REGRAS</h3>
+            <hr />
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label>
+                        <span class="glyphicon glyphicon-calendar"></span>
+                        Início da corrida
+                    </label>
+                    <small>formado ta data deve ser dd/mm/aaaa</small><br />
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.DataInicio, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DataInicio, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.EmailADM, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EmailADM, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EmailADM, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label>
+                        <span class="glyphicon glyphicon-calendar"></span>
+                        Fim da corrida
+                    </label>
+                    <small>formado ta data deve ser dd/mm/aaaa</small><br />
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.DataFinal, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DataFinal, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Criar Corrida" class="btn btn-success" />
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label>
+                        <span class="glyphicon glyphicon-question-sign"></span>
+                        Definição das regras
+                    </label>
+                    <small>deixe claro os objetivos da corrida</small><br />
+                    <small>Ex. os corredores deverão pesar uma vez por semana</small>
+                </div>
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.Regras, new { htmlAttributes = new { @class = "form-control " } })
+                    @Html.ValidationMessageFor(model => model.Regras, "", new { @class = "text-danger" })
+                </div>
             </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label>
+                        <span class="glyphicon glyphicon-envelope"></span>
+                        Email do administrador
+                    </label>
+                    <small>é muito importante informar um email válido!!!!</small><br />
+                </div>
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.EmailADM, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.EmailADM, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-4">
+                    <input type="submit" value="Criar Corrida" class="btn btn-success" />
+                </div>
+                <div class="col-md-4">
+                    <br />
+                    <br />
+                    @Html.ActionLink("Retornar", "Index", "Home")
+                </div>
+            </div>
+
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Retornar", "Index","Home")
-</div>
+
 
 @section Scripts {
-     @Scripts.Render("~/bundles/mascara")
+    @Scripts.Render("~/bundles/mascara")
 }
 

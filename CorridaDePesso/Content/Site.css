@@ -20,7 +20,9 @@
 input,
 select,
 textarea {
-    max-width: 280px;
+    max-width: 480px;
+    border-radius: 0 0 0 0!important;
+    box-shadow:none !important;
 }
 
 .corredores {
