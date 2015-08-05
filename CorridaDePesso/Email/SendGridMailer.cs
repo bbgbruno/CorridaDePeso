@@ -24,7 +24,7 @@ namespace CorridaDePesso.Email
         {
 
             var sendGridMenssage = new SendGridMessage(); 
-            sendGridMenssage.From = new MailAddress("noreplay@tecsoft.info");
+            sendGridMenssage.From = new MailAddress("noreplay@Corridadepeso.com.br");
             if (message.IsBodyHtml)
                 sendGridMenssage.Html = message.Body;
             else
