@@ -48,7 +48,7 @@ namespace CorridaDePesso.Controllers
         // GET: Corrida
         public ActionResult CorridasPublicas()
         {
-        
+
             var corridasPublicas = db.Corridas.ToList();
             var corridas = RetornarListadeCorridas(corridasPublicas);
             return View("Index", corridas);
@@ -59,18 +59,16 @@ namespace CorridaDePesso.Controllers
             foreach (var item in corridasPublicas)
             {
                 var corredores = db.Corredors.Where(dado => dado.CorridaId == item.Id);
-                if (corredores.Count() > 0)
+      
+                yield return new CorridaViewModel
                 {
-                    yield return new CorridaViewModel
-                    {
-                        Id = item.Id,
-                        Titulo = item.Titulo,
-                        DataInicial = item.DataInicio,
-                        DataFinal = item.DataFinal,
-                        NumeroCorredores = corredores.Count(),
-                        CorredorLider = corredores.OrderByDescending(dado => (dado.PesoIcinial - dado.PesoAtual)).FirstOrDefault()
-                    };
-                }
+                    Id = item.Id,
+                    Titulo = item.Titulo,
+                    DataInicial = item.DataInicio,
+                    DataFinal = item.DataFinal,
+                    NumeroCorredores = corredores.Count(),
+                    CorredorLider = corredores.OrderByDescending(dado => (dado.PesoIcinial - dado.PesoAtual)).FirstOrDefault()
+                };
             }
         }
 
@@ -129,7 +127,7 @@ namespace CorridaDePesso.Controllers
                 NotificaPorEmail.NotificarNovoCadastro(user.Email, password, user.Email);
                 return RedirectToAction("CorridasPublicas");
             }
-            
+
             return View(corrida);
 
         }

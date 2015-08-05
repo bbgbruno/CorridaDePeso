@@ -78,7 +78,7 @@ namespace CorridaDePesso.Email
                      <td colspan='3' style='font-family: Georgia; color: #444;'>
                         <h1 style='font-size: 50px; text-align: center; color: #000; line-height: 120%; margin: 10px  0; font-weight: normal; text-align: center;'>Aviso do Corrida de Peso</h1>
                         <p>Olá, {{mensagem}}</p>
-                        <p><b><i>O Sistema Corrida de Peso</i></b> - É uma aplicação em nuvens para ajudar e estimular de forma diverita uma competição saldavel. Ele possibilita aos usuário o acompanhamento a cada pesagem, 
+                        <p><b><i>O Sistema Corrida de Peso</i></b> - É uma aplicação em nuvens para ajudar e estimular de forma diverita, uma competição saldavel. Ele possibilita aos usuário o acompanhamento a cada pesagem, 
                                                                      garantindo a transparancia para os competidores com graficos de evoluçao, deixando sempre corredor com o foco no resultado.
                                                                      Com a utilização desta ferramenta, você terá em mãos uma facilitador para uma brincadeira divertida e estigante para voce e seus amigos.
                         </p>

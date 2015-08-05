@@ -49,16 +49,19 @@
                                 @item.NumeroCorredores.ToString() <small>participantes</small>
                             </h4>
                         </div>
-                        <div class="col-lg-1">
-                            <img src="~/Img/id53.jpg" class="img-circle img-responsive" alt="" />
-                        </div>
-                        <div class="col-lg-3">
-                            <h4 style="margin:0">
-                                @item.CorredorLider.Nome <br />
-                                <small>está liderando a corrida</small> <br />
-                                <small>pois perdeu <strong>@item.CorredorLider.PesoPerdido Kg</strong></small>
-                            </h4>
-                        </div>
+                        @if (@item.CorredorLider != null)
+                        {
+                            <div class="col-lg-1">
+                                <img src=@item.CorredorLider.urlImagemCorredor class="img-circle img-responsive" alt="" />
+                            </div>
+                            <div class="col-lg-3">
+                                <h4 style="margin:0">
+                                    @item.CorredorLider.Nome <br />
+                                    <small>está liderando a corrida</small> <br />
+                                    <small>pois perdeu <strong>@item.CorredorLider.PesoPerdido Kg</strong></small>
+                                </h4>
+                            </div>
+                        }
                         <div class="col-lg-6">
                             @if (Session["Usuario"] == null)
                             {
