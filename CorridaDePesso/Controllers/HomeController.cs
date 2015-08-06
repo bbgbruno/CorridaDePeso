@@ -12,7 +12,7 @@ namespace CorridaDePesso.Controllers
 
         public ActionResult Index()
         {
-            return RedirectToAction("CorridasPublicas", "Corrida");
+            return RedirectToAction("Index", "Corrida");
         }
 
         public ActionResult About()

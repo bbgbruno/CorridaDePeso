@@ -46,5 +46,6 @@ namespace CorridaDePesso.Models
 
         public System.Data.Entity.DbSet<CorridaDePesso.Models.Corrida> Corridas { get; set; }
 
+
     }
 }

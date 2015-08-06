@@ -1,0 +1,62 @@
+﻿@using CorridaDePesso.Models;
+@model IEnumerable<CorridaDePesso.Models.CorridaViewModel>
+
+@{
+    ViewBag.Title = "Corridas Em Andamento";
+}
+<h2>CORRIDAS EM ANDAMENTO</h2>
+
+@foreach (var item in Model)
+{
+    <table class="table">
+        <tr>
+            <td colspan="3">
+                <h3>@item.Titulo</h3>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="row">
+                    <div class="corrida-andamento">
+                        <div class="col-lg-3">
+                            <h4 style="margin:0">
+                                <small>
+                                    começou em @item.DataInicial.ToString("dd/mm/yyyy")
+                                </small><br />
+                                <small>
+                                    termina em @item.DataFinal.ToString("dd/mm/yyyy")
+                                </small><br />
+                                @item.NumeroCorredores.ToString() <small>participantes</small>
+                            </h4>
+                        </div>
+                        @if (@item.CorredorLider != null)
+                        {
+                            <div class="col-lg-1">
+                                <img src=@item.CorredorLider.urlImagemCorredor class="img-circle img-responsive" alt="" />
+                            </div>
+                            <div class="col-lg-3">
+                                <h4 style="margin:0">
+                                    @item.CorredorLider.Nome <br />
+                                    <small>está liderando a corrida</small> <br />
+                                    <small>pois perdeu <strong>@item.CorredorLider.PesoPerdido Kg</strong></small>
+                                </h4>
+                            </div>
+                        }
+                        <div class="col-lg-6">
+                            @if (Session["Usuario"] == null)
+                            {
+                                @Html.ActionLink("Quero participar", "Create", "Corredor", new { corridaId = item.Id }, new { @class = "btn btn-success" })
+                            }
+                            @if (Session["Usuario"] != null && ((ApplicationUser)Session["Usuario"]).TipoUsuario == TipoConta.Administrador)
+                            {
+                                @Html.ActionLink("Incluir Pesagem", "Create", "Pesagem", new { corridaId = item.Id }, new { @class = "btn btn-success" })
+                            }
+                            @Html.ActionLink("Acompanhe", "Index", "DashboardCorrida", new { corridaId = item.Id }, new { @class = "btn btn-warning" })
+                            @Html.ActionLink("Saiba mais...", "Details", "Corrida", new { Id = item.Id }, new { @class = "btn btn-default" })
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+}

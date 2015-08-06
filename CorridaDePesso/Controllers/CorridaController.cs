@@ -40,10 +40,16 @@ namespace CorridaDePesso.Controllers
         // GET: Corrida
         public ActionResult Index()
         {
+            return View();
+        }
+       
+        public ActionResult MinhasCorridas()
+        {
             var userId = UsuarioSessao().Id;
             var corridas = RetornarListadeCorridas(db.Corridas.Where(x => x.UserId == userId).ToList());
-            return View(corridas);
+            return View("Corridas", corridas);
         }
+
 
         // GET: Corrida
         public ActionResult CorridasPublicas()
@@ -51,7 +57,7 @@ namespace CorridaDePesso.Controllers
 
             var corridasPublicas = db.Corridas.ToList();
             var corridas = RetornarListadeCorridas(corridasPublicas);
-            return View("Index", corridas);
+            return View("Corridas", corridas);
         }
 
         private IEnumerable<CorridaViewModel> RetornarListadeCorridas(List<Corrida> corridasPublicas)
