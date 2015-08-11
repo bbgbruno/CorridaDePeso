@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity;
 using CorridaDePesso.Controllers.HelperController;
 using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
+using CorridaDePesso.Email;
 
 namespace CorridaDePesso.Controllers
 {
@@ -60,6 +61,7 @@ namespace CorridaDePesso.Controllers
                 corredor.PesoObjetivo = RetornarPesoObjetivo(corredor.Corrida, corredor.PesoAtual);
                 db.Corredors.Add(corredor);
                 db.SaveChanges();
+                NotificaPorEmail.NotificarNovoCorredor(corredor.Corrida.EmailADM, "O corredor "+corredor.Nome+" Deseja participar da corrida " +corredor.Corrida.Titulo );
                 return View("EnvioConfirmado");
             }
 

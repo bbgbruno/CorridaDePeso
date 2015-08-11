@@ -64,7 +64,7 @@ namespace CorridaDePesso.Controllers
         {
             foreach (var item in corridasPublicas)
             {
-                var corredores = db.Corredors.Where(dado => dado.CorridaId == item.Id);
+                var corredores = db.Corredors.Where(dado => dado.CorridaId == item.Id && dado.Aprovado==true);
       
                 yield return new CorridaViewModel
                 {

@@ -27,6 +27,22 @@ namespace CorridaDePesso.Email
             return send(message);
 
         }
+        public static bool NotificarNovoCorredor(string to, string mensagem)
+        {
+
+            MailMessage message = new MailMessage();
+
+            var html = HtmlTemplate();
+            html = html.Replace("{{mensagem}}", mensagem);
+
+            message.To.Add(to);
+            message.Body = html;
+            message.Subject = "Corrida de Peso Informa: Solicitação de Inscrição";
+            message.IsBodyHtml = true;
+
+            return send(message);
+
+        }
 
 
         public static bool NotificarNovoCadastro(string to, string NovaSenha, string Usuario)

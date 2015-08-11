@@ -49,10 +49,9 @@ namespace CorridaDePesso.Controllers
                 pesagem.UserId = userId;
                 db.Pesagems.Add(pesagem);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("MinhasCorridas", "Corrida");
             }
 
-            ViewBag.CorredorId = new SelectList(db.Corredors, "id", "Nome", pesagem.CorredorId);
             return View(pesagem);
         }
 
