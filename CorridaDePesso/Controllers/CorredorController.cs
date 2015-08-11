@@ -61,14 +61,14 @@ namespace CorridaDePesso.Controllers
                 corredor.PesoObjetivo = RetornarPesoObjetivo(corredor.Corrida, corredor.PesoAtual);
                 db.Corredors.Add(corredor);
                 db.SaveChanges();
-                NotificaPorEmail.NotificarNovoCorredor(corredor.Corrida.EmailADM, "O corredor "+corredor.Nome+" Deseja participar da corrida " +corredor.Corrida.Titulo );
+                NotificaPorEmail.NotificarNovoCorredor(corredor.Corrida.EmailADM, "O corredor "+corredor.Nome+" Deseja participar da corrida " +corredor.Corrida.Titulo+ " Faça seu login vá em corredores e aprove seu cadastro"  );
                 return View("EnvioConfirmado");
             }
 
             return View(corredor);
         }
 
-        public  async Task<ActionResult> Aprovar(int id)
+        public  async Task<ActionResult> Aprovar(int id )
         {
             var corredor = db.Corredors.Find(id);
             var user = db.Users.Where(dado => dado.UserName == corredor.Email).FirstOrDefault();
@@ -86,6 +86,9 @@ namespace CorridaDePesso.Controllers
                     if (!ModelState.IsValid)
                         return RedirectToAction("index");
                 }
+ 
+                NotificaPorEmail.NotificarNovoCorredor(user.Email,"Seu cadastro na Corrida foi aprovado Seu Usuario é "+user.Email+" Sua Senha é "+password  );
+ 
             }
             
             corredor.Aprovado = true;

@@ -46,8 +46,18 @@ namespace CorridaDePesso.Controllers
         public ActionResult MinhasCorridas()
         {
             var userId = UsuarioSessao().Id;
-            var corridas = RetornarListadeCorridas(db.Corridas.Where(x => x.UserId == userId).ToList());
-            return View("Corridas", corridas);
+            if (UsuarioSessao().TipoUsuario == TipoConta.Administrador)
+            {
+                var corridas = RetornarListadeCorridas(db.Corridas.Where(x => x.UserId == userId).ToList());
+                return View("Corridas", corridas);
+            }
+            else
+            {
+                var corridas = RetornarListadeCorridas(db.Corridas.Where(x => x.UserId == userId).ToList());
+                return View("Corridas", corridas);
+            }
+
+           
         }
 
 
@@ -127,6 +137,7 @@ namespace CorridaDePesso.Controllers
                     }
 
                 }
+                
                 corrida.UserId = user.Id;
                 db.Corridas.Add(corrida);
                 db.SaveChanges();
