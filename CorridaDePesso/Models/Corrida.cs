@@ -23,6 +23,10 @@ namespace CorridaDePesso.Models
 
     public class Corrida
     {
+        public Corrida()
+        {
+            Participantes = new List<Corredor>();
+        }
         public int Id { get; set; }
         public string UserId { get; set; }
         public string Regras { get; set; }

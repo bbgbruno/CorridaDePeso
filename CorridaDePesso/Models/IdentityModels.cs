@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Data.Entity.ModelConfiguration;
 
 namespace CorridaDePesso.Models
 {
@@ -35,6 +36,12 @@ namespace CorridaDePesso.Models
         {
         }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Configurations.Add(new CorridaConfig());
+            base.OnModelCreating(modelBuilder);
+        }
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
@@ -47,5 +54,21 @@ namespace CorridaDePesso.Models
         public System.Data.Entity.DbSet<CorridaDePesso.Models.Corrida> Corridas { get; set; }
 
 
+    }
+
+    public class CorridaConfig : EntityTypeConfiguration<Corrida>
+    {
+        public CorridaConfig()
+        {
+            // MAPEAMENTO DE MUITOS PARA MUITOS
+            HasMany(f => f.Participantes)
+                .WithMany()
+                .Map(me =>
+                {
+                    me.MapLeftKey("CorridaId");
+                    me.MapRightKey("CorredorId");
+                    me.ToTable("CorridaParticipantes");
+                });
+        }
     }
 }

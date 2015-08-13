@@ -34,6 +34,5 @@ namespace CorridaDePesso.Models
         [NotMapped]
         public double FaltaPerder { get { return Math.Round((PesoIcinial - PesoObjetivo) - PesoPerdido, 2); } }
         public bool Aprovado { get; set; }
- 
     }
 }

@@ -74,7 +74,7 @@ namespace CorridaDePesso.Controllers
         public ActionResult CorridasPublicas()
         {
 
-            var corridasPublicas = db.Corridas.ToList();
+            var corridasPublicas = db.Corridas.Include(p => p.Participantes).ToList();
             var corridas = RetornarListaDeCorridas(corridasPublicas);
             return View("Corridas", corridas);
         }
