@@ -45,13 +45,13 @@ namespace CorridaDePesso.Email
         }
 
 
-        public static bool NotificarNovoCadastro(string to, string NovaSenha, string Usuario)
+        public static bool NotificarNovoCadastro(string to, string NovaSenha, string Usuario,string link)
         {
 
             MailMessage message = new MailMessage();
 
             var html = HtmlTemplate();
-            var mensagem = " Você acaba de criar um pista de competição! Agora é só convidar seus amigos para começar a corrida" + "<p><b>Usuário:</b> " + Usuario + "</p>" + "<p><b>Senha: </b>" + NovaSenha + "  </p>";
+            var mensagem = " Você acaba de criar um pista de competição! Agora é só convidar seus amigos para começar a corrida" + "<p><b>Usuário:</b> " + Usuario + "</p>" + "<p><b>Senha: </b>" + NovaSenha + "  </p> <br> Envie este o link da corrida os participantes "+link;
             html = html.Replace("{{mensagem}}", mensagem);
             html = html.Replace("{{Link_Logo}}", ImagePath);
 

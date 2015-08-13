@@ -55,11 +55,14 @@ namespace CorridaDePesso.Controllers
         {
             if (ModelState.IsValid)
             {
-                corredor.Corrida = db.Corridas.Find(corredor.CorridaId);
-                corredor.UserId = corredor.Corrida.UserId;
+                var corrida = db.Corridas.Find(corredor.CorridaId);
+                corredor.Corrida = corrida;
+                corredor.UserId = corrida.UserId;
                 corredor.PesoAtual = corredor.PesoIcinial;
                 corredor.PesoObjetivo = RetornarPesoObjetivo(corredor.Corrida, corredor.PesoAtual);
                 db.Corredors.Add(corredor);
+                corrida.Participantes.Add(corredor);
+                db.Entry(corrida).State = EntityState.Modified;
                 db.SaveChanges();
                 NotificaPorEmail.NotificarNovoCorredor(corredor.Corrida.EmailADM, "O corredor "+corredor.Nome+" Deseja participar da corrida " +corredor.Corrida.Titulo+ " Faça seu login vá em corredores e aprove seu cadastro"  );
                 return View("EnvioConfirmado");

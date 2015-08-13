@@ -10,7 +10,7 @@ namespace CorridaDePesso.Models
     {
         [Display(Name = "Perda De Peso")]
         PerdaDePeso = 0,
-        [Display(Name = "Aumento De Peso")]
+        [Display(Name = "Ganho De Peso")]
         AumentoDePeso = 1
     }
 
@@ -44,5 +44,7 @@ namespace CorridaDePesso.Models
         public string EmailADM { get; set; }
         [Display(Name = "é Pùblica")]
         public bool Publica { get; set; }
+        public string Link { get; set; }
+        public ICollection<Corredor> Participantes { get; set; }
     }
 }

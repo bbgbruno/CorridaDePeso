@@ -48,16 +48,25 @@ namespace CorridaDePesso.Controllers
             var userId = UsuarioSessao().Id;
             if (UsuarioSessao().TipoUsuario == TipoConta.Administrador)
             {
-                var corridas = RetornarListadeCorridas(db.Corridas.Where(x => x.UserId == userId).ToList());
+                var corridas = RetornarListaDeCorridas(db.Corridas.Where(x => x.UserId == userId).ToList());
                 return View("Corridas", corridas);
             }
             else
             {
-                var corridas = RetornarListadeCorridas(db.Corridas.Where(x => x.UserId == userId).ToList());
+                var corridas = RetornarListaDeCorridas(db.Corridas.Where(x => x.UserId == userId).ToList());
                 return View("Corridas", corridas);
             }
 
            
+        }
+
+        // GET: Link
+        public ActionResult Link(string id)
+        {
+
+            var corridasPublicas = db.Corridas.Where(dado => dado.Link.Equals(id)).ToList();
+            var corridas = RetornarListaDeCorridas(corridasPublicas);
+            return View("Corridas", corridas);
         }
 
 
@@ -66,11 +75,11 @@ namespace CorridaDePesso.Controllers
         {
 
             var corridasPublicas = db.Corridas.ToList();
-            var corridas = RetornarListadeCorridas(corridasPublicas);
+            var corridas = RetornarListaDeCorridas(corridasPublicas);
             return View("Corridas", corridas);
         }
 
-        private IEnumerable<CorridaViewModel> RetornarListadeCorridas(List<Corrida> corridasPublicas)
+        private IEnumerable<CorridaViewModel> RetornarListaDeCorridas(List<Corrida> corridasPublicas)
         {
             foreach (var item in corridasPublicas)
             {
@@ -137,11 +146,13 @@ namespace CorridaDePesso.Controllers
                     }
 
                 }
-                
+
+                var link = "http://www.corridadepeso.com.br/corrida/link/" + TratamentoString.CalcularMD5Hash(corrida.Titulo);  
                 corrida.UserId = user.Id;
+                corrida.Link = TratamentoString.CalcularMD5Hash(corrida.Titulo);  
                 db.Corridas.Add(corrida);
                 db.SaveChanges();
-                NotificaPorEmail.NotificarNovoCadastro(user.Email, password, user.Email);
+                //NotificaPorEmail.NotificarNovoCadastro(user.Email, password, user.Email, link);
                 return RedirectToAction("CorridasPublicas");
             }
 
