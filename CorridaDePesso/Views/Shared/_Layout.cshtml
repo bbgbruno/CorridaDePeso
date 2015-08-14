@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using CorridaDePesso.Models;
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -22,15 +24,13 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    @if (Request.IsAuthenticated)
+                    @if (Session["Usuario"] != null && ((ApplicationUser)Session["Usuario"]).TipoUsuario == TipoConta.Administrador)
                     {
                         <li>@Html.ActionLink("Corredores", "Index", "Corredor")</li>
-                        <li>@Html.ActionLink("Minhas Corridas", "MinhasCorridas", "Corrida")</li>
                     }
-                    else
+                    @if (Request.IsAuthenticated)
                     {
-                        @*<li>@Html.ActionLink("Nova corrida", "Create", "Corrida")</li>
-                            <li>@Html.ActionLink("Corridas em andamento", "CorridasPublicas", "Corrida")</li>*@
+                        <li>@Html.ActionLink("Minhas Corridas", "MinhasCorridas", "Corrida")</li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")

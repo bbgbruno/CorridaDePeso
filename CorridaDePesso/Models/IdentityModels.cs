@@ -62,7 +62,7 @@ namespace CorridaDePesso.Models
         {
             // MAPEAMENTO DE MUITOS PARA MUITOS
             HasMany(f => f.Participantes)
-                .WithMany()
+                .WithMany( f => f.Corridas)
                 .Map(me =>
                 {
                     me.MapLeftKey("CorridaId");
@@ -71,4 +71,5 @@ namespace CorridaDePesso.Models
                 });
         }
     }
+
 }

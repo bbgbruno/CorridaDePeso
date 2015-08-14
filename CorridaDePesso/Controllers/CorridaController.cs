@@ -53,8 +53,8 @@ namespace CorridaDePesso.Controllers
             }
             else
             {
-                var corridas = RetornarListaDeCorridas(db.Corridas.Where(x => x.UserId == userId).ToList());
-                return View("Corridas", corridas);
+                var corredor = db.Corredors.Include(p => p.Corridas).Where(x => x.UserId == userId).FirstOrDefault();
+                return View("Corridas", RetornarListaDeCorridas(corredor.Corridas.ToList()));
             }
 
            
@@ -74,7 +74,7 @@ namespace CorridaDePesso.Controllers
         public ActionResult CorridasPublicas()
         {
 
-            var corridasPublicas = db.Corridas.Include(p => p.Participantes).ToList();
+            var corridasPublicas = db.Corridas.ToList();
             var corridas = RetornarListaDeCorridas(corridasPublicas);
             return View("Corridas", corridas);
         }
@@ -83,7 +83,7 @@ namespace CorridaDePesso.Controllers
         {
             foreach (var item in corridasPublicas)
             {
-                var corredores = db.Corredors.Where(dado => dado.CorridaId == item.Id && dado.Aprovado==true);
+                var corredores = db.Corredors.Where(dado => dado.Corrida.Id == item.Id && dado.Aprovado==true);
       
                 yield return new CorridaViewModel
                 {
@@ -96,7 +96,6 @@ namespace CorridaDePesso.Controllers
                 };
             }
         }
-
 
         // GET: Corrida/Details/5
         public ActionResult Details(int? id)

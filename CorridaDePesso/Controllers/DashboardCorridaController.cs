@@ -25,7 +25,7 @@ namespace CorridaDePesso.Controllers
 
             var grafico = new Grafico();
 
-            var corredores = db.Corredors.Where(x => x.id == id && x.Aprovado==true).Select(dado => dado.Nome).ToList();
+            var corredores = db.Corredors.Where(x => x.Id == id && x.Aprovado==true).Select(dado => dado.Nome).ToList();
 
             foreach (var item in corredores)
             {

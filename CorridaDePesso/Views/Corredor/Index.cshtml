@@ -1,6 +1,5 @@
-﻿@using CorridaDePesso.Models;
-@model IEnumerable<CorridaDePesso.Models.Corredor>
-
+﻿@model IEnumerable<CorridaDePesso.Models.ViewModel.CorredorViewModel>
+@using CorridaDePesso.Models.ViewModel;
 
 @{
     ViewBag.Title = "Lista de Corredores";
@@ -11,7 +10,7 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Corrida.Titulo)
+            @Html.DisplayNameFor(model => model.TituloCorrida)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Nome)
@@ -35,7 +34,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(model => item.Corrida.Titulo)
+            @Html.DisplayFor(model => item.TituloCorrida)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Nome)
@@ -55,12 +54,12 @@
         <td>
            @if (item.Aprovado)
            {
-             @Html.ActionLink("Regeitar", "Regeitar", new { id = item.id }) 
+             @Html.ActionLink("Regeitar", "Regeitar", new { id = item.Id }) 
    
            }
             else
            {
-             @Html.ActionLink("Aprovar", "Aprovar", new { id = item.id }) 
+             @Html.ActionLink("Aprovar", "Aprovar", new { id = item.Id }) 
            }
         </td>
     </tr>

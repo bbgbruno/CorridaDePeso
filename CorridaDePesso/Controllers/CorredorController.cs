@@ -9,10 +9,12 @@ using CorridaDePesso.Controllers.HelperController;
 using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
 using CorridaDePesso.Email;
+using System.Collections.Generic;
+using CorridaDePesso.Models.ViewModel;
 
 namespace CorridaDePesso.Controllers
 {
-  
+
     public class CorredorController : ApplicationController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -29,58 +31,85 @@ namespace CorridaDePesso.Controllers
                 _userManager = value;
             }
         }
-        
+
         // GET: Corredor
         public ActionResult Index()
         {
-           var userId = UsuarioSessao().Id;
-           return View(db.Corredors.Where(x => x.UserId == userId).OrderByDescending(dado => dado.PesoIcinial - dado.PesoAtual).ToList());
+            var userId = UsuarioSessao().Id;
+            var corridas = db.Corridas.Include(x => x.Participantes).Where(x => x.UserId == userId).ToList();
+            var corredores = RetornarListaDeCorredores(corridas);
+            return View(corredores);
         }
+
+        private IEnumerable<CorredorViewModel> RetornarListaDeCorredores(List<Corrida> corridasPublicas)
+        {
+            foreach (var item in corridasPublicas)
+            {
+                foreach (var corredor in item.Participantes)
+                {
+                    yield return new CorredorViewModel
+                    {
+                        Id = corredor.Id,
+                        TituloCorrida = item.Titulo,
+                        PesoAtual = corredor.PesoAtual,
+                        PesoIcinial = corredor.PesoIcinial,
+                        PesoObjetivo = corredor.PesoObjetivo,
+                        Nome = corredor.Nome,
+                        Aprovado = corredor.Aprovado
+                    };
+                }
+            }
+        }
+
 
         // GET: Corredor/Create
         public ActionResult Create(int corridaId)
         {
             var corredor = new Corredor();
-            corredor.CorridaId = corridaId; 
+            corredor.Corrida.Id = corridaId;
             return View(corredor);
         }
 
         // POST: Corredor/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-    
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Corredor corredor)
         {
             if (ModelState.IsValid)
             {
-                var corrida = db.Corridas.Find(corredor.CorridaId);
-                corredor.Corrida = corrida;
-                corredor.UserId = corrida.UserId;
-                corredor.PesoAtual = corredor.PesoIcinial;
-                corredor.PesoObjetivo = RetornarPesoObjetivo(corredor.Corrida, corredor.PesoAtual);
-                db.Corredors.Add(corredor);
+                var corrida = db.Corridas.Find(corredor.Corrida.Id);
+                var corredorOld = db.Corredors.Where(dado => dado.Email == corredor.Email);
+                if (corredorOld == null)
+                {
+                    corredor.Corrida = corrida;
+                    corredor.UserId = corrida.UserId;
+                    corredor.PesoAtual = corredor.PesoIcinial;
+                    corredor.PesoObjetivo = RetornarPesoObjetivo(corredor.Corrida, corredor.PesoAtual);
+                    db.Corredors.Add(corredor);
+                }
                 corrida.Participantes.Add(corredor);
                 db.Entry(corrida).State = EntityState.Modified;
                 db.SaveChanges();
-                NotificaPorEmail.NotificarNovoCorredor(corredor.Corrida.EmailADM, "O corredor "+corredor.Nome+" Deseja participar da corrida " +corredor.Corrida.Titulo+ " Faça seu login vá em corredores e aprove seu cadastro"  );
+                NotificaPorEmail.NotificarNovoCorredor(corredor.Corrida.EmailADM, "O corredor " + corredor.Nome + " Deseja participar da corrida " + corredor.Corrida.Titulo + " Faça seu login vá em corredores e aprove seu cadastro");
                 return View("EnvioConfirmado");
             }
 
             return View(corredor);
         }
 
-        public  async Task<ActionResult> Aprovar(int id )
+        public async Task<ActionResult> Aprovar(int id)
         {
-            var corredor = db.Corredors.Find(id);
+            var corredor = db.Corredors.Include(x => x.Corridas).Where(x => x.Id == id).FirstOrDefault();
             var user = db.Users.Where(dado => dado.UserName == corredor.Email).FirstOrDefault();
-            
+
             if (user == null)
             {
                 var passwordHash = new PasswordHasher();
                 string password = TratamentoString.CalcularMD5Hash(corredor.Email).Substring(1, 8);
-                   
+
                 user = new ApplicationUser { UserName = corredor.Email, Email = corredor.Email, TipoUsuario = TipoConta.Corredor };
                 var result = await UserManager.CreateAsync(user, password);
                 if (!result.Succeeded)
@@ -89,17 +118,18 @@ namespace CorridaDePesso.Controllers
                     if (!ModelState.IsValid)
                         return RedirectToAction("index");
                 }
- 
-                NotificaPorEmail.NotificarNovoCorredor(user.Email,"Seu cadastro na Corrida foi aprovado Seu Usuario é "+user.Email+" Sua Senha é "+password  );
- 
+
+                NotificaPorEmail.NotificarNovoCorredor(user.Email, "Seu cadastro na Corrida foi aprovado Seu Usuario é " + user.Email + " Sua Senha é " + password);
+
             }
-            
+
             corredor.Aprovado = true;
+            corredor.UserId = user.Id;
             db.Entry(corredor).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("index");
         }
-        
+
         public ActionResult Regeitar(int id)
         {
             var corredor = db.Corredors.Find(id);
@@ -124,7 +154,7 @@ namespace CorridaDePesso.Controllers
 
             return valorObjetivo;
         }
-     
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
