@@ -76,28 +76,28 @@ namespace CorridaDePesso.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Corredor corredor)
+        public ActionResult Create(Corredor novoCorredor)
         {
             if (ModelState.IsValid)
             {
-                var corrida = db.Corridas.Find(corredor.Corrida.Id);
-                var corredorOld = db.Corredors.Where(dado => dado.Email == corredor.Email);
-                if (corredorOld == null)
+                var corrida = db.Corridas.Include(x => x.Participantes).Where(x => x.Id == novoCorredor.Corrida.Id).FirstOrDefault();
+                var corredor = db.Corredors.Include(x => x.Corridas).Where(dado => dado.Email == novoCorredor.Email).FirstOrDefault();
+                if ( corredor == null)
                 {
-                    corredor.Corrida = corrida;
-                    corredor.UserId = corrida.UserId;
-                    corredor.PesoAtual = corredor.PesoIcinial;
-                    corredor.PesoObjetivo = RetornarPesoObjetivo(corredor.Corrida, corredor.PesoAtual);
-                    db.Corredors.Add(corredor);
+                    novoCorredor.PesoAtual = novoCorredor.PesoIcinial;
+                    novoCorredor.PesoObjetivo = RetornarPesoObjetivo(novoCorredor.Corrida, novoCorredor.PesoAtual);
+                    db.Corredors.Add(novoCorredor);
+                    corredor = novoCorredor;
                 }
+
                 corrida.Participantes.Add(corredor);
                 db.Entry(corrida).State = EntityState.Modified;
                 db.SaveChanges();
-                NotificaPorEmail.NotificarNovoCorredor(corredor.Corrida.EmailADM, "O corredor " + corredor.Nome + " Deseja participar da corrida " + corredor.Corrida.Titulo + " Faça seu login vá em corredores e aprove seu cadastro");
+                NotificaPorEmail.NotificarNovoCorredor(corrida.EmailADM, "O corredor " + corredor.Nome + " Deseja participar da corrida " + corrida.Titulo + " Faça seu login vá em corredores e aprove seu cadastro");
                 return View("EnvioConfirmado");
             }
 
-            return View(corredor);
+            return View(novoCorredor);
         }
 
         public async Task<ActionResult> Aprovar(int id)
