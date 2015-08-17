@@ -66,7 +66,8 @@ namespace CorridaDePesso.Controllers
         public ActionResult Create(int corridaId)
         {
             var corredor = new Corredor();
-            corredor.Corrida.Id = corridaId;
+            var corrida = db.Corridas.Where(x => x.Id== corridaId).FirstOrDefault();
+            corredor.Corridas.Add(corrida);
             return View(corredor);
         }
 
@@ -80,12 +81,12 @@ namespace CorridaDePesso.Controllers
         {
             if (ModelState.IsValid)
             {
-                var corrida = db.Corridas.Include(x => x.Participantes).Where(x => x.Id == novoCorredor.Corrida.Id).FirstOrDefault();
+                var corrida = db.Corridas.Include(x => x.Participantes).Where(x => x.Id == novoCorredor.Corridas.FirstOrDefault().Id).FirstOrDefault();
                 var corredor = db.Corredors.Include(x => x.Corridas).Where(dado => dado.Email == novoCorredor.Email).FirstOrDefault();
                 if ( corredor == null)
                 {
                     novoCorredor.PesoAtual = novoCorredor.PesoIcinial;
-                    novoCorredor.PesoObjetivo = RetornarPesoObjetivo(novoCorredor.Corrida, novoCorredor.PesoAtual);
+                    novoCorredor.PesoObjetivo = RetornarPesoObjetivo(novoCorredor.Corridas.FirstOrDefault(), novoCorredor.PesoAtual);
                     db.Corredors.Add(novoCorredor);
                     corredor = novoCorredor;
                 }

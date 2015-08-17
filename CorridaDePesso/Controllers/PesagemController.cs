@@ -26,8 +26,8 @@ namespace CorridaDePesso.Controllers
         // GET: Pesagems/Create
         public ActionResult Create(int corridaId)
         {
-            var userId = UsuarioSessao().Id;
-            ViewBag.CorredorId = new SelectList(db.Corredors.Where(dado => dado.Corrida.Id==corridaId), "id", "Nome");
+            var corrida = db.Corridas.Include(x => x.Participantes).Where(x => x.Id == corridaId).FirstOrDefault();
+            ViewBag.CorredorId = new SelectList(corrida.Participantes.Where(dado => dado.Aprovado == true), "id", "Nome");
             var pesagem = new Pesagem();
             pesagem.CorridaId = corridaId;
             return View(pesagem);

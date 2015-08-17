@@ -1,10 +1,9 @@
-﻿using CorridaDePesso.Models;
-using System;
-using System.Collections.Generic;
+﻿using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Web;
 using System.Web.Mvc;
+using CorridaDePesso.Models;
+using System.Collections.Generic;
+using System.Text;
 
 namespace CorridaDePesso.Controllers
 {
@@ -14,7 +13,10 @@ namespace CorridaDePesso.Controllers
 
         public ActionResult Index(int corridaId)
         {
-            return View(db.Corredors.Where(x => x.Aprovado==true && x.Corrida.Id==corridaId ).OrderByDescending(dado => dado.PesoIcinial - dado.PesoAtual ).ToList());
+
+            var corrida = db.Corridas.Include(x => x.Participantes).Where(x => x.Id == corridaId).FirstOrDefault();
+            var corredores = corrida.Participantes.Where(x => x.Aprovado == true).OrderByDescending(dado => dado.PesoIcinial - dado.PesoAtual).ToList();         
+            return View(corredores);
         }
 
         [HttpGet]
@@ -62,7 +64,8 @@ namespace CorridaDePesso.Controllers
         [HttpGet]
         public JsonResult GetCorredorPeso(int id)
         {
-            var corredores = db.Corredors.Where(x => x.Aprovado == true && x.Corrida.Id==id ).Select(dado => new { dado.Nome, dado.PesoIcinial, dado.PesoAtual, dado.PesoObjetivo }).OrderByDescending(x => (x.PesoIcinial - x.PesoAtual)).ToList();
+            var corrida = db.Corridas.Include(x => x.Participantes).Where(x => x.Id == id).FirstOrDefault();
+            var corredores =corrida.Participantes.Select(dado => new { dado.Nome, dado.PesoIcinial, dado.PesoAtual, dado.PesoObjetivo }).OrderByDescending(x => (x.PesoIcinial - x.PesoAtual)).ToList();
 
             var retorno = new
             {

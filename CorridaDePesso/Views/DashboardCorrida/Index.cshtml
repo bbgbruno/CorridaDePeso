@@ -15,7 +15,7 @@
                                 <img src="@item.urlImagemCorredor" alt="140X140" class="img-circle" style="width:80px">
                             </div>
                             <div class="col-md-8">
-                                <h4 style="margin-top:0; margin-bottom:0"> <a href="#" id="@item.id" class="LinkCorredor">@item.Nome  </a></h4>
+                                <h4 style="margin-top:0; margin-bottom:0"> <a href="#" id="@item.Id" class="LinkCorredor">@item.Nome  </a></h4>
                                 <strong>Já Perdido: @item.PesoPerdido</strong><br />
                                 <strong>Falta Perder : @item.FaltaPerder</strong><br />
                                 Peso Inicial: @item.PesoIcinial <br />
@@ -30,7 +30,7 @@
     <div id="GraficoDePeso" class="col-md-9">
     </div>
 </div>
-   @Html.HiddenFor(model => model.FirstOrDefault().Corrida.Id)
+   @*@Html.HiddenFor(model => model.Corridas.FirstOrDefault().Id)*@
 <br />
 <div class="row">
 </div>

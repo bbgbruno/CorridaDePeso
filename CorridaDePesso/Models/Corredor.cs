@@ -12,7 +12,7 @@ namespace CorridaDePesso.Models
         public Corredor()
         {
             Aprovado = false;
-            Corrida = new Corrida();
+            //Corrida = new Corrida();
             Corridas = new List<Corrida>();
         }
 
@@ -28,7 +28,7 @@ namespace CorridaDePesso.Models
         public string Nome { get; set; }
         [Display(Name = "Url da Imagem")]
         public String urlImagemCorredor { get; set; }
-        public virtual Corrida Corrida { get; set; }
+        //public virtual Corrida Corrida { get; set; }
         public bool Aprovado { get; set; }
         public ICollection<Corrida> Corridas { get; set; }
         

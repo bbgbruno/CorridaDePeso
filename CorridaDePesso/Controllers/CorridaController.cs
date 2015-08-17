@@ -9,7 +9,7 @@ using CorridaDePesso.Controllers.HelperController;
 using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using CorridaDePesso.Email;
+
 
 namespace CorridaDePesso.Controllers
 {
@@ -74,7 +74,7 @@ namespace CorridaDePesso.Controllers
         public ActionResult CorridasPublicas()
         {
 
-            var corridasPublicas = db.Corridas.ToList();
+            var corridasPublicas = db.Corridas.Include(x => x.Participantes).ToList();
             var corridas = RetornarListaDeCorridas(corridasPublicas);
             return View("Corridas", corridas);
         }
@@ -83,7 +83,6 @@ namespace CorridaDePesso.Controllers
         {
             foreach (var item in corridasPublicas)
             {
-                var corredores = db.Corredors.Where(dado => dado.Corrida.Id == item.Id && dado.Aprovado==true);
       
                 yield return new CorridaViewModel
                 {
@@ -91,8 +90,8 @@ namespace CorridaDePesso.Controllers
                     Titulo = item.Titulo,
                     DataInicial = item.DataInicio,
                     DataFinal = item.DataFinal,
-                    NumeroCorredores = corredores.Count(),
-                    CorredorLider = corredores.OrderByDescending(dado => (dado.PesoIcinial - dado.PesoAtual)).FirstOrDefault()
+                    NumeroCorredores = item.Participantes.Count(),
+                    CorredorLider = item.Participantes.OrderByDescending(dado => (dado.PesoIcinial - dado.PesoAtual)).FirstOrDefault()
                 };
             }
         }
