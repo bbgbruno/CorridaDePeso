@@ -22,5 +22,8 @@ namespace CorridaDePesso.Models.ViewModel
         public double PesoPerdido { get { return Math.Round(PesoIcinial - PesoAtual, 2); } }
         [Display(Name = "Falta Perder")]
         public double FaltaPerder { get { return Math.Round((PesoIcinial - PesoObjetivo) - PesoPerdido, 2); } }
+        [Display(Name = "Url da Imagem")]
+        public String urlImagemCorredor { get; set; }
+        public virtual Corrida Corrida { get; set; }
     }
 }

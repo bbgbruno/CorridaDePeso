@@ -1,7 +1,9 @@
-﻿@model IEnumerable<CorridaDePesso.Models.Corredor>
+﻿@model IEnumerable<CorridaDePesso.Models.ViewModel.CorredorViewModel>
+
 @{
     ViewBag.Title = "Corredor de Peso";
 }
+
 <br />
 <div class="row">
     <div class="row col-md-3">
@@ -30,7 +32,7 @@
     <div id="GraficoDePeso" class="col-md-9">
     </div>
 </div>
-   @*@Html.HiddenFor(model => model.Corridas.FirstOrDefault().Id)*@
+   @Html.HiddenFor(model => model.FirstOrDefault().Corrida.Id)
 <br />
 <div class="row">
 </div>

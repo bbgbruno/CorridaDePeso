@@ -29,7 +29,7 @@
                                 @item.NumeroCorredores.ToString() <small>participantes</small>
                             </h4>
                         </div>
-                        @if (@item.CorredorLider != null)
+                        @if (@item.CorredorLider != null && @item.CorredorLider.PesoPerdido>0)
                         {
                             <div class="col-lg-1">
                                 <img src=@item.CorredorLider.urlImagemCorredor class="img-circle img-responsive" alt="" />

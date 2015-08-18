@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using CorridaDePesso.Models;
 using System.Collections.Generic;
 using System.Text;
+using CorridaDePesso.Models.ViewModel;
 
 namespace CorridaDePesso.Controllers
 {
@@ -14,8 +15,9 @@ namespace CorridaDePesso.Controllers
         public ActionResult Index(int corridaId)
         {
 
-            var corrida = db.Corridas.Include(x => x.Participantes).Where(x => x.Id == corridaId).FirstOrDefault();
-            var corredores = corrida.Participantes.Where(x => x.Aprovado == true).OrderByDescending(dado => dado.PesoIcinial - dado.PesoAtual).ToList();         
+            //corrida.Participantes.Where(x => x.Aprovado == true).OrderByDescending(dado => dado.PesoIcinial - dado.PesoAtual).ToList();         
+            var corrida = db.Corridas.Include(x => x.Participantes).Where(x => x.Id == corridaId).ToList();
+            var corredores = RetornarListaDeCorredores(corrida);
             return View(corredores);
         }
 
@@ -78,5 +80,28 @@ namespace CorridaDePesso.Controllers
 
         }
 
+        private IEnumerable<CorredorViewModel> RetornarListaDeCorredores(List<Corrida> corridasPublicas)
+        {
+            foreach (var item in corridasPublicas)
+            {
+                foreach (var corredor in item.Participantes)
+                {
+                    yield return new CorredorViewModel
+                    {
+                        Id = corredor.Id,
+                        TituloCorrida = item.Titulo,
+
+                        PesoAtual = corredor.PesoAtual,
+                        PesoIcinial = corredor.PesoIcinial,
+                        PesoObjetivo = corredor.PesoObjetivo,
+                        Nome = corredor.Nome,
+                        Aprovado = corredor.Aprovado,
+                        Corrida = item,
+                        urlImagemCorredor = corredor.urlImagemCorredor
+
+                    };
+                }
+            }
+        }
     }
 }

@@ -9,6 +9,7 @@ using CorridaDePesso.Controllers.HelperController;
 using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using CorridaDePesso.Email;
 
 
 namespace CorridaDePesso.Controllers
@@ -48,7 +49,7 @@ namespace CorridaDePesso.Controllers
             var userId = UsuarioSessao().Id;
             if (UsuarioSessao().TipoUsuario == TipoConta.Administrador)
             {
-                var corridas = RetornarListaDeCorridas(db.Corridas.Where(x => x.UserId == userId).ToList());
+                var corridas = RetornarListaDeCorridas(db.Corridas.Include(p => p.Participantes).Where(x => x.UserId == userId).ToList());
                 return View("Corridas", corridas);
             }
             else
@@ -150,7 +151,7 @@ namespace CorridaDePesso.Controllers
                 corrida.Link = TratamentoString.CalcularMD5Hash(corrida.Titulo);  
                 db.Corridas.Add(corrida);
                 db.SaveChanges();
-                //NotificaPorEmail.NotificarNovoCadastro(user.Email, password, user.Email, link);
+                NotificaPorEmail.NotificarNovoCadastro(user.Email, password, user.Email, link);
                 return RedirectToAction("CorridasPublicas");
             }
 
