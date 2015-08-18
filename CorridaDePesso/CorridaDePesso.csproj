@@ -202,8 +202,11 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Img\banner.png" />
+    <Content Include="Img\default-user.png" />
+    <Content Include="Img\grupo.png" />
     <Content Include="Img\id53.jpg" />
     <Content Include="Img\logo.png" />
+    <Content Include="Img\winner.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="fonts\BonvenoCF-Light-webfont.eot" />

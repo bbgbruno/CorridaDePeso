@@ -18,7 +18,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="@Url.Action("CorridasPublicas","Corrida")">
+                <a href="@Url.Action("Index","Corrida")">
                     <img src="~/Img/logo.png" alt="Alternate Text" />
                 </a>
             </div>
@@ -41,6 +41,37 @@
     <div class="container body-content">
         @RenderBody()
     </div>
+    <footer id="page-footer" class="row">
+        <div class="container">
+            <div class="col-md-4">
+                <h3>
+                    </span>CONTATOS
+                </h3>
+                <hr>
+                <p>
+                    contato@corridadepeso.com.br
+                    <br>+55 84 99946-6353
+                </p>
+            </div>
+            <div class="col-md-8">
+                <h3>
+                    </span>REDES SOCIAIS
+                </h3>
+                <hr>
+                <div class="fb-like"></div>
+            </div>
+        </div>
+    </footer>
+    <div id="fb-root"></div>
+    <script>
+            (function(d, s, id) {
+              var js, fjs = d.getElementsByTagName(s)[0];
+              if (d.getElementById(id)) return;
+              js = d.createElement(s); js.id = id;
+              js.src = "//connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v2.4&appId=701920979832721";
+              fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+    </script>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
