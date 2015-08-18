@@ -27,15 +27,31 @@ namespace CorridaDePesso.Email
             return send(message);
 
         }
-
-
-        public static bool NotificarNovoCadastro(string to, string NovaSenha, string Usuario)
+        public static bool NotificarNovoCorredor(string to, string mensagem)
         {
 
             MailMessage message = new MailMessage();
 
             var html = HtmlTemplate();
-            var mensagem = " Você acaba de criar um pista de competição! Agora é só convidar seus amigos para começar a corrida" + "<p><b>Usuário:</b> " + Usuario + "</p>" + "<p><b>Senha: </b>" + NovaSenha + "  </p>";
+            html = html.Replace("{{mensagem}}", mensagem);
+
+            message.To.Add(to);
+            message.Body = html;
+            message.Subject = "Corrida de Peso Informa: Solicitação de Inscrição";
+            message.IsBodyHtml = true;
+
+            return send(message);
+
+        }
+
+
+        public static bool NotificarNovoCadastro(string to, string NovaSenha, string Usuario,string link)
+        {
+
+            MailMessage message = new MailMessage();
+
+            var html = HtmlTemplate();
+            var mensagem = " Você acaba de criar um pista de competição! Agora é só convidar seus amigos para começar a corrida" + "<p><b>Usuário:</b> " + Usuario + "</p>" + "<p><b>Senha: </b>" + NovaSenha + "  </p> <br> Envie este o link da corrida os participantes "+link;
             html = html.Replace("{{mensagem}}", mensagem);
             html = html.Replace("{{Link_Logo}}", ImagePath);
 

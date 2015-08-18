@@ -12,7 +12,7 @@
     <div class="form-horizontal">
         <h4>Novo Corredor</h4>
         <hr />
-        @Html.HiddenFor(model => model.CorridaId)
+        @Html.HiddenFor(model => model.Corrida.Id)
         <div class="form-group">
             @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -48,7 +48,7 @@
         
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Participar Agora!" class="btn btn-success" />
             </div>
         </div>
     </div>

@@ -1,10 +1,10 @@
-﻿using CorridaDePesso.Models;
-using System;
-using System.Collections.Generic;
+﻿using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Web;
 using System.Web.Mvc;
+using CorridaDePesso.Models;
+using System.Collections.Generic;
+using System.Text;
+using CorridaDePesso.Models.ViewModel;
 
 namespace CorridaDePesso.Controllers
 {
@@ -14,7 +14,11 @@ namespace CorridaDePesso.Controllers
 
         public ActionResult Index(int corridaId)
         {
-            return View(db.Corredors.Where(x => x.Aprovado==true && x.Corrida.Id==corridaId ).OrderByDescending(dado => dado.PesoIcinial - dado.PesoAtual ).ToList());
+
+            //corrida.Participantes.Where(x => x.Aprovado == true).OrderByDescending(dado => dado.PesoIcinial - dado.PesoAtual).ToList();         
+            var corrida = db.Corridas.Include(x => x.Participantes).Where(x => x.Id == corridaId).ToList();
+            var corredores = RetornarListaDeCorredores(corrida);
+            return View(corredores);
         }
 
         [HttpGet]
@@ -25,7 +29,7 @@ namespace CorridaDePesso.Controllers
 
             var grafico = new Grafico();
 
-            var corredores = db.Corredors.Where(x => x.id == id && x.Aprovado==true).Select(dado => dado.Nome).ToList();
+            var corredores = db.Corredors.Where(x => x.Id == id && x.Aprovado==true).Select(dado => dado.Nome).ToList();
 
             foreach (var item in corredores)
             {
@@ -62,7 +66,8 @@ namespace CorridaDePesso.Controllers
         [HttpGet]
         public JsonResult GetCorredorPeso(int id)
         {
-            var corredores = db.Corredors.Where(x => x.Aprovado == true && x.Corrida.Id==id ).Select(dado => new { dado.Nome, dado.PesoIcinial, dado.PesoAtual, dado.PesoObjetivo }).OrderByDescending(x => (x.PesoIcinial - x.PesoAtual)).ToList();
+            var corrida = db.Corridas.Include(x => x.Participantes).Where(x => x.Id == id).FirstOrDefault();
+            var corredores =corrida.Participantes.Select(dado => new { dado.Nome, dado.PesoIcinial, dado.PesoAtual, dado.PesoObjetivo }).OrderByDescending(x => (x.PesoIcinial - x.PesoAtual)).ToList();
 
             var retorno = new
             {
@@ -75,5 +80,28 @@ namespace CorridaDePesso.Controllers
 
         }
 
+        private IEnumerable<CorredorViewModel> RetornarListaDeCorredores(List<Corrida> corridasPublicas)
+        {
+            foreach (var item in corridasPublicas)
+            {
+                foreach (var corredor in item.Participantes)
+                {
+                    yield return new CorredorViewModel
+                    {
+                        Id = corredor.Id,
+                        TituloCorrida = item.Titulo,
+
+                        PesoAtual = corredor.PesoAtual,
+                        PesoIcinial = corredor.PesoIcinial,
+                        PesoObjetivo = corredor.PesoObjetivo,
+                        Nome = corredor.Nome,
+                        Aprovado = corredor.Aprovado,
+                        Corrida = item,
+                        urlImagemCorredor = corredor.urlImagemCorredor
+
+                    };
+                }
+            }
+        }
     }
 }

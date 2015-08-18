@@ -21,15 +21,15 @@
                         <div class="col-lg-3">
                             <h4 style="margin:0">
                                 <small>
-                                    começou em @item.DataInicial.ToString("dd/mm/yyyy")
+                                    começou em @item.DataInicial.ToString("dd/MM/yyyy")
                                 </small><br />
                                 <small>
-                                    termina em @item.DataFinal.ToString("dd/mm/yyyy")
+                                    termina em @item.DataFinal.ToString("dd/MM/yyyy")
                                 </small><br />
                                 @item.NumeroCorredores.ToString() <small>participantes</small>
                             </h4>
                         </div>
-                        @if (@item.CorredorLider != null)
+                        @if (@item.CorredorLider != null && @item.CorredorLider.PesoPerdido>0)
                         {
                             <div class="col-lg-1">
                                 <img src=@item.CorredorLider.urlImagemCorredor class="img-circle img-responsive" alt="" />

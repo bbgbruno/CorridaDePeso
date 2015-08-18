@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using CorridaDePesso.Email;
 
+
 namespace CorridaDePesso.Controllers
 {
     public class Grafico
@@ -46,7 +47,26 @@ namespace CorridaDePesso.Controllers
         public ActionResult MinhasCorridas()
         {
             var userId = UsuarioSessao().Id;
-            var corridas = RetornarListadeCorridas(db.Corridas.Where(x => x.UserId == userId).ToList());
+            if (UsuarioSessao().TipoUsuario == TipoConta.Administrador)
+            {
+                var corridas = RetornarListaDeCorridas(db.Corridas.Include(p => p.Participantes).Where(x => x.UserId == userId).ToList());
+                return View("Corridas", corridas);
+            }
+            else
+            {
+                var corredor = db.Corredors.Include(p => p.Corridas).Where(x => x.UserId == userId).FirstOrDefault();
+                return View("Corridas", RetornarListaDeCorridas(corredor.Corridas.ToList()));
+            }
+
+           
+        }
+
+        // GET: Link
+        public ActionResult Link(string id)
+        {
+
+            var corridasPublicas = db.Corridas.Where(dado => dado.Link.Equals(id)).ToList();
+            var corridas = RetornarListaDeCorridas(corridasPublicas);
             return View("Corridas", corridas);
         }
 
@@ -55,16 +75,15 @@ namespace CorridaDePesso.Controllers
         public ActionResult CorridasPublicas()
         {
 
-            var corridasPublicas = db.Corridas.ToList();
-            var corridas = RetornarListadeCorridas(corridasPublicas);
+            var corridasPublicas = db.Corridas.Include(x => x.Participantes).ToList();
+            var corridas = RetornarListaDeCorridas(corridasPublicas);
             return View("Corridas", corridas);
         }
 
-        private IEnumerable<CorridaViewModel> RetornarListadeCorridas(List<Corrida> corridasPublicas)
+        private IEnumerable<CorridaViewModel> RetornarListaDeCorridas(List<Corrida> corridasPublicas)
         {
             foreach (var item in corridasPublicas)
             {
-                var corredores = db.Corredors.Where(dado => dado.CorridaId == item.Id);
       
                 yield return new CorridaViewModel
                 {
@@ -72,12 +91,11 @@ namespace CorridaDePesso.Controllers
                     Titulo = item.Titulo,
                     DataInicial = item.DataInicio,
                     DataFinal = item.DataFinal,
-                    NumeroCorredores = corredores.Count(),
-                    CorredorLider = corredores.OrderByDescending(dado => (dado.PesoIcinial - dado.PesoAtual)).FirstOrDefault()
+                    NumeroCorredores = item.Participantes.Count(),
+                    CorredorLider = item.Participantes.OrderByDescending(dado => (dado.PesoIcinial - dado.PesoAtual)).FirstOrDefault()
                 };
             }
         }
-
 
         // GET: Corrida/Details/5
         public ActionResult Details(int? id)
@@ -127,10 +145,13 @@ namespace CorridaDePesso.Controllers
                     }
 
                 }
+
+                var link = "http://www.corridadepeso.com.br/corrida/link/" + TratamentoString.CalcularMD5Hash(corrida.Titulo);  
                 corrida.UserId = user.Id;
+                corrida.Link = TratamentoString.CalcularMD5Hash(corrida.Titulo);  
                 db.Corridas.Add(corrida);
                 db.SaveChanges();
-                NotificaPorEmail.NotificarNovoCadastro(user.Email, password, user.Email);
+                NotificaPorEmail.NotificarNovoCadastro(user.Email, password, user.Email, link);
                 return RedirectToAction("CorridasPublicas");
             }
 
