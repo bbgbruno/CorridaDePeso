@@ -25,5 +25,7 @@ namespace CorridaDePesso.Models.ViewModel
         [Display(Name = "Url da Imagem")]
         public String urlImagemCorredor { get; set; }
         public virtual Corrida Corrida { get; set; }
+        public int CorridaId { get; set; }
+        public string Email { get; set; }
     }
 }

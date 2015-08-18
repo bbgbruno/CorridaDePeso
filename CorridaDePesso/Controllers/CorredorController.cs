@@ -65,10 +65,8 @@ namespace CorridaDePesso.Controllers
         // GET: Corredor/Create
         public ActionResult Create(int corridaId)
         {
-            var corredor = new Corredor();
-            var corrida = db.Corridas.Where(x => x.Id== corridaId).FirstOrDefault();
-            corredor.Corridas.Add(corrida);
-            return View(corredor);
+            ViewBag.CorridaId = corridaId;
+            return View();
         }
 
         // POST: Corredor/Create
@@ -77,16 +75,23 @@ namespace CorridaDePesso.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Corredor novoCorredor)
+        public ActionResult Create(CorredorViewModel model)
         {
+            
+
             if (ModelState.IsValid)
             {
-                var corrida = db.Corridas.Include(x => x.Participantes).Where(x => x.Id == novoCorredor.Corridas.FirstOrDefault().Id).FirstOrDefault();
-                var corredor = db.Corredors.Include(x => x.Corridas).Where(dado => dado.Email == novoCorredor.Email).FirstOrDefault();
+                var corrida = db.Corridas.Include(x => x.Participantes).Where(x => x.Id == model.CorridaId).FirstOrDefault();
+                var corredor = db.Corredors.Include(x => x.Corridas).Where(dado => dado.Email == model.Email).FirstOrDefault();
                 if ( corredor == null)
                 {
-                    novoCorredor.PesoAtual = novoCorredor.PesoIcinial;
-                    novoCorredor.PesoObjetivo = RetornarPesoObjetivo(novoCorredor.Corridas.FirstOrDefault(), novoCorredor.PesoAtual);
+                    Corredor novoCorredor = new Corredor();
+                    novoCorredor.PesoAtual = model.PesoIcinial;
+                    novoCorredor.PesoIcinial = model.PesoIcinial;
+                    novoCorredor.Nome = model.Nome;
+                    novoCorredor.Email = model.Email;
+                    novoCorredor.urlImagemCorredor = model.urlImagemCorredor;
+                    novoCorredor.PesoObjetivo = RetornarPesoObjetivo(db.Corridas.Find(model.CorridaId), novoCorredor.PesoAtual);
                     db.Corredors.Add(novoCorredor);
                     corredor = novoCorredor;
                 }
@@ -98,7 +103,7 @@ namespace CorridaDePesso.Controllers
                 return View("EnvioConfirmado");
             }
 
-            return View(novoCorredor);
+            return View(model);
         }
 
         public async Task<ActionResult> Aprovar(int id)
