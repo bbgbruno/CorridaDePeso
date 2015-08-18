@@ -15,7 +15,6 @@ namespace CorridaDePesso.Controllers
         public ActionResult Index(int corridaId)
         {
 
-            //corrida.Participantes.Where(x => x.Aprovado == true).OrderByDescending(dado => dado.PesoIcinial - dado.PesoAtual).ToList();         
             var corrida = db.Corridas.Include(x => x.Participantes).Where(x => x.Id == corridaId).ToList();
             var corredores = RetornarListaDeCorredores(corrida);
             return View(corredores);
@@ -51,15 +50,7 @@ namespace CorridaDePesso.Controllers
                 };
                 listGrafico.Add(retorno);
             }
-
-            var pesoCorredores = db.Corredors.Select(dado => new { dado.Nome, dado.PesoIcinial, dado.PesoAtual }).OrderByDescending(x => (x.PesoIcinial - x.PesoAtual)).ToList();
-
-            /* var dados = new
-             {
-                 Chave = pesoCorredores.Select(desp => desp.Nome).ToArray(),
-                 Valor = pesoCorredores.Select(desp => Math.Round(desp.PesoIcinial - desp.PesoAtual,2)).ToArray()
-             };*/
-
+            
             return Json(new { categories = grafico.categories, Data = listGrafico }, "json", Encoding.UTF8, JsonRequestBehavior.AllowGet);
         }
 
@@ -67,7 +58,7 @@ namespace CorridaDePesso.Controllers
         public JsonResult GetCorredorPeso(int id)
         {
             var corrida = db.Corridas.Include(x => x.Participantes).Where(x => x.Id == id).FirstOrDefault();
-            var corredores =corrida.Participantes.Select(dado => new { dado.Nome, dado.PesoIcinial, dado.PesoAtual, dado.PesoObjetivo }).OrderByDescending(x => (x.PesoIcinial - x.PesoAtual)).ToList();
+            var corredores =corrida.Participantes.Where(x => x.Aprovado==true).Select(dado => new { dado.Nome, dado.PesoIcinial, dado.PesoAtual, dado.PesoObjetivo }).OrderByDescending(x => (x.PesoIcinial - x.PesoAtual)).ToList();
 
             var retorno = new
             {
@@ -84,7 +75,7 @@ namespace CorridaDePesso.Controllers
         {
             foreach (var item in corridasPublicas)
             {
-                foreach (var corredor in item.Participantes)
+                foreach (var corredor in item.Participantes.Where(x => x.Aprovado==true))
                 {
                     yield return new CorredorViewModel
                     {

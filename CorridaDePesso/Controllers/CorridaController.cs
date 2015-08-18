@@ -91,7 +91,7 @@ namespace CorridaDePesso.Controllers
                     Titulo = item.Titulo,
                     DataInicial = item.DataInicio,
                     DataFinal = item.DataFinal,
-                    NumeroCorredores = item.Participantes.Count(),
+                    NumeroCorredores = item.Participantes.Where(x => x.Aprovado==true).Count(),
                     CorredorLider = item.Participantes.OrderByDescending(dado => (dado.PesoIcinial - dado.PesoAtual)).FirstOrDefault()
                 };
             }
