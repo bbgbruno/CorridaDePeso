@@ -12,7 +12,7 @@
     <div class="form-horizontal">
         <h4>Novo Corredor</h4>
         <hr />
-        @Html.HiddenFor(model => model.Corrida.Id)
+        @Html.HiddenFor(model => model.Corridas.FirstOrDefault().Id)
         <div class="form-group">
             @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">

@@ -129,7 +129,7 @@ namespace CorridaDePesso.Controllers
             var user = db.Users.Where(dado => dado.UserName == corrida.EmailADM).FirstOrDefault();
             if (ModelState.IsValid)
             {
-                string password = "";
+                string password = "Sua Senha já foi Cadastrada Enteriormente";
 
                 if (user == null)
                 {
