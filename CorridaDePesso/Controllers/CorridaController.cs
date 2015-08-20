@@ -54,7 +54,7 @@ namespace CorridaDePesso.Controllers
             }
             else
             {
-                var corredor = db.Corredors.Include(p => p.Corridas).Where(x => x.UserId == userId).FirstOrDefault();
+                var corredor = db.Corredors.Include(p => p.Corridas ).Where(x => x.UserId == userId).FirstOrDefault();
                 return View("Corridas", RetornarListaDeCorridas(corredor.Corridas.ToList()));
             }
 
@@ -84,15 +84,16 @@ namespace CorridaDePesso.Controllers
         {
             foreach (var item in corridasPublicas)
             {
-      
+
+                var Corredores = db.Corridas.Include(x => x.Participantes).Where(x => x.Id == item.Id).FirstOrDefault().Participantes;
                 yield return new CorridaViewModel
                 {
                     Id = item.Id,
                     Titulo = item.Titulo,
                     DataInicial = item.DataInicio,
                     DataFinal = item.DataFinal,
-                    NumeroCorredores = item.Participantes.Where(x => x.Aprovado==true).Count(),
-                    CorredorLider = item.Participantes.OrderByDescending(dado => (dado.PesoIcinial - dado.PesoAtual)).FirstOrDefault()
+                    NumeroCorredores = Corredores.Where(x => x.Aprovado == true).Count(),
+                    CorredorLider = Corredores.OrderByDescending(dado => (dado.PesoIcinial - dado.PesoAtual)).FirstOrDefault()
                 };
             }
         }
