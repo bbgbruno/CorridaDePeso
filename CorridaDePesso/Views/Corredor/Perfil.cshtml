@@ -1,8 +1,43 @@
-﻿@model CorridaDePesso.Models.Corredor
-
+﻿@model CorridaDePesso.Models.ViewModel.CorredorViewModel
 
 @{
-    ViewBag.Title = "View";
-    Layout = "Perfil";
+    ViewBag.Title = "Perfil";
 }
 
+<h2>Perfil</h2>
+
+<div class="corredor">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-2">
+                <img src="@Model.urlImagemCorredor" alt="140X140" class="img-circle" style="width:80px">
+            </div>
+            <div class="col-md-2">
+                <h4 style="margin-top:0; margin-bottom:0"> <a href="#" id="@Model.Id" class="LinkCorredor">@Model.Nome  </a></h4>
+                <strong>Já Perdido: @Model.PesoPerdido</strong><br />
+                <strong>Falta Perder : @Model.FaltaPerder</strong><br />
+                Peso Inicial: @Model.PesoIcinial <br />
+                Peso Objetivo: @Model.PesoObjetivo <br />
+            </div>
+            <div class="col-md-8">
+                @using (Html.BeginForm())
+                {
+                    @Html.HiddenFor(model => model.Email);
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.urlImagemCorredor, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.urlImagemCorredor, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.urlImagemCorredor, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Atualizar!" class="btn btn-success" />
+                        </div>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
