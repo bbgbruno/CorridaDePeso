@@ -17,11 +17,11 @@ namespace CorridaDePesso.Controllers
 
             var corrida = db.Corridas.Include(x => x.Participantes).Where(x => x.Id == corridaId).ToList();
             var corredores = RetornarListaDeCorredores(corrida);
-            return View(corredores);
+            return View(corredores.OrderBy(x => x.PesoAtual - x.PesoObjetivo));
         }
 
         [HttpGet]
-        public JsonResult GetPesagemCorredorGeral(int id)
+        public JsonResult GetPesagemCorredorGeral(int id, int corridaId)
         {
 
             var listGrafico = new List<object>();
@@ -49,6 +49,26 @@ namespace CorridaDePesso.Controllers
                     Valor = pesagems.Select(desp => new { y = desp.Valor, type = "spline" }).ToArray()
                 };
                 listGrafico.Add(retorno);
+              //  dias
+
+
+                
+                List<string> chave = new List<string>();
+                
+                chave.Add("Meta");
+                List<object> valor = new List<object>();
+                valor.Add(new { y = 68, type = "spline" });
+                valor.Add(new { y = 66, type = "spline" });
+                valor.Add(new { y = 64, type = "spline" });
+                valor.Add(new { y = 62, type = "spline" });
+                valor.Add(new { y = 60, type = "spline" });
+                
+                var meta = new
+                {
+                    Chave = pesagems.Select(desp => desp.Chave.Day + "/" + desp.Chave.Month).ToArray(),
+                    Valor = valor.ToArray()
+                };
+                listGrafico.Add(meta);
             }
             
             return Json(new { categories = grafico.categories, Data = listGrafico }, "json", Encoding.UTF8, JsonRequestBehavior.AllowGet);
@@ -66,7 +86,7 @@ namespace CorridaDePesso.Controllers
                 Valor = corredores.Select(desp => new { name = " Já Perdeu ", y = (desp.PesoIcinial - desp.PesoAtual) }).ToArray(),
                 Dado  = corredores.Select(desp => new { name = " Objetivo ", y = (desp.PesoIcinial - desp.PesoObjetivo) }).ToArray()
             };
-
+            
             return Json(new { Data = retorno }, "json", Encoding.UTF8, JsonRequestBehavior.AllowGet);
 
         }

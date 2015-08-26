@@ -2,10 +2,9 @@
     var index;
     var categorias = [];
     var series = [];
+    categorias.push(resultado.Data[0].Chave);
     for (index in resultado.Data) {
         series.push({ name: resultado.categories[index], data: resultado.Data[index].Valor });
-        categorias.push(resultado.Data[index].Chave);
-        
     }
 
     $('#GraficoDePeso').highcharts({
@@ -13,7 +12,7 @@
             type: 'spline'
         },
         title: {
-            text: 'Resultado Parcial Da Competição de Perda de Peso',
+            text: 'Evolução do participante',
             zoomType: 'xy'
         },
         subtitle: {
@@ -150,8 +149,9 @@ $(document).ready(function () {
     $.get("/DashboardCorrida/GetCorredorPeso/" + corridaid, {}, RankingPerdaDePeso, 'json');
 
     $(".LinkCorredor").on('click', function (e) {
-        var id = $(this).attr('id');
-        $.get("/DashboardCorrida/GetPesagemCorredorGeral/" + id, {}, CarregaGrafico, 'json');
+        var corredorId = $(this).attr('id');
+        var corridaId = $(this).attr('Value');
+        $.get("/DashboardCorrida/GetPesagemCorredorGeral/", { id: corredorId, corridaId: corridaId }, CarregaGrafico, 'json');
 
         $.get("/Pesagem/ListarPesagem/" + id, {}, CarregaListaPesagem,'html' );
     });
