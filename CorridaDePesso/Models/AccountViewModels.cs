@@ -72,12 +72,12 @@ namespace CorridaDePesso.Models
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Senha")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "Confirme a Senha")]
+        [Compare("Password", ErrorMessage = "A senha de confirmação es diferente da senha digitada.")]
         public string ConfirmPassword { get; set; }
     }
 

@@ -52,7 +52,7 @@ namespace CorridaDePesso.Controllers
                         Id = corredor.Id,
                         TituloCorrida = item.Titulo,
    
-                        PesoAtual = corredor.PesoAtual,
+                     PesoAtual = corredor.PesoAtual,
                         PesoIcinial = corredor.PesoIcinial,
                         PesoObjetivo = corredor.PesoObjetivo,
                         Nome = corredor.Nome,
@@ -63,15 +63,40 @@ namespace CorridaDePesso.Controllers
         }
 
         // GET: Corredor/Create
+        public ActionResult Perfil()
+        {
+            var email = UsuarioSessao().Email;
+            var corredor = db.Corredors.Where(x => x.Email == email ).FirstOrDefault();
+            var model = new CorredorViewModel()
+                        {
+                            urlImagemCorredor = corredor.urlImagemCorredor,
+                            PesoAtual = corredor.PesoAtual,
+                            PesoIcinial = corredor.PesoIcinial,
+                            PesoObjetivo = corredor.PesoObjetivo,
+                            Email = corredor.Email,
+                            Nome = corredor.Nome,
+
+                        };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Perfil(CorredorViewModel model)
+        {
+            var corredor = db.Corredors.Where(x => x.Email == model.Email).FirstOrDefault();
+            corredor.urlImagemCorredor = model.urlImagemCorredor;
+            db.Entry(corredor).State = EntityState.Modified;
+            db.SaveChanges();
+            return View(corredor);
+        }
+
+        // GET: Corredor/Create
         public ActionResult Create(int corridaId)
         {
             ViewBag.CorridaId = corridaId;
             return View();
         }
-
-        // POST: Corredor/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -83,7 +108,7 @@ namespace CorridaDePesso.Controllers
             {
                 var corrida = db.Corridas.Include(x => x.Participantes).Where(x => x.Id == model.CorridaId).FirstOrDefault();
                 var corredor = db.Corredors.Include(x => x.Corridas).Where(dado => dado.Email == model.Email).FirstOrDefault();
-                if ( corredor == null)
+                if (corredor == null)
                 {
                     Corredor novoCorredor = new Corredor();
                     novoCorredor.PesoAtual = model.PesoIcinial;
