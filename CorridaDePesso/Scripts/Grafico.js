@@ -8,7 +8,6 @@
         
     }
 
-    $('#GraficoDePeso').InnerHTML = "";
     $('#GraficoDePeso').highcharts({
         chart: {
             type: 'spline'
@@ -138,6 +137,11 @@ function RankingPerdaDePeso(resultado) {
     });
 }
 
+function CarregaListaPesagem(resultado) {
+    console.log(resultado);
+    $('#pesagem').html(resultado)
+}
+
 
 $(document).ready(function () {
 
@@ -148,6 +152,8 @@ $(document).ready(function () {
     $(".LinkCorredor").on('click', function (e) {
         var id = $(this).attr('id');
         $.get("/DashboardCorrida/GetPesagemCorredorGeral/" + id, {}, CarregaGrafico, 'json');
+
+        $.get("/Pesagem/ListarPesagem/" + id, {}, CarregaListaPesagem,'html' );
     });
 
 });

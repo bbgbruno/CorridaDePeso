@@ -1,0 +1,40 @@
+﻿@model IEnumerable<CorridaDePesso.Models.Pesagem>
+@using CorridaDePesso.Models
+@{Layout = null;}
+
+@if (Session["Usuario"] != null && ((ApplicationUser)Session["Usuario"]).TipoUsuario == TipoConta.Administrador)
+{     
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Corredor.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Data)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Peso)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Corredor.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Data)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Peso)
+            </td>
+            <td>
+                @if (Request.IsAuthenticated)
+                { @Html.ActionLink("Excluir", "Delete", new { id = item.id }) }
+            </td>
+        </tr>
+    }
+</table>
+}

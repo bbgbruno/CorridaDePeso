@@ -268,7 +268,7 @@
     <Content Include="Views\Corredor\Index.cshtml" />
     <Content Include="Views\Pesagem\Create.cshtml" />
     <Content Include="Views\Pesagem\Delete.cshtml" />
-    <Content Include="Views\Pesagem\Index.cshtml" />
+    <Content Include="Views\Pesagem\LitsarPesagem.cshtml" />
     <Content Include="Views\Corrida\Create.cshtml" />
     <Content Include="Views\Corrida\Delete.cshtml" />
     <Content Include="Views\Corrida\Details.cshtml" />
@@ -278,6 +278,7 @@
     <Content Include="Views\Corredor\EnvioConfirmado.cshtml" />
     <Content Include="Views\Corrida\Corridas.cshtml" />
     <Content Include="Views\Corredor\Perfil.cshtml" />
+    <Content Include="Views\Pesagem\_listapesagem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

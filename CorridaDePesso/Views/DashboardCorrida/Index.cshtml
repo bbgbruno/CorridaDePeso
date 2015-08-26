@@ -32,7 +32,7 @@
     <div id="GraficoDePeso" class="col-md-9">
     </div>
 </div>
-   @Html.HiddenFor(model => model.FirstOrDefault().Corrida.Id)
+@Html.HiddenFor(model => model.FirstOrDefault().Corrida.Id)
 <br />
 <div class="row">
 </div>
@@ -40,6 +40,12 @@
     <div id="InfoCorredor" class="col-lg-8">
     </div>
 </div>
+<div class="row">
+    <div class="row col-md-4">
+        </div>
+        <div id="pesagem" class="col-lg-8">
+        </div>
+    </div>
 
 @section scripts{
     @Scripts.Render("~/bundles/Grafico")

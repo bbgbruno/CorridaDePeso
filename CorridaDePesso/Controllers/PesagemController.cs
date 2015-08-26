@@ -61,6 +61,15 @@ namespace CorridaDePesso.Controllers
 
             return View(pesagem);
         }
+       
+        
+        // POST: Pesagems/Delete/5
+        public ActionResult ListarPesagem(int id)
+        {
+            var pesagens = db.Pesagems.Where(x => x.CorredorId == id).ToList();
+            return View("_listapesagem", pesagens);
+        }
+
 
         // GET: Pesagems/Delete/5
         public ActionResult Delete(int? id)
@@ -114,4 +123,5 @@ namespace CorridaDePesso.Controllers
             base.Dispose(disposing);
         }
     }
+
 }
