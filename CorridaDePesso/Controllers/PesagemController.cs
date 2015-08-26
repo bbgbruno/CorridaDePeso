@@ -47,6 +47,13 @@ namespace CorridaDePesso.Controllers
                 corredor.PesoAtual = pesagem.Peso;
                 db.Entry(corredor).State = EntityState.Modified;
                 pesagem.UserId = userId;
+                var primeiraPesagem = ( db.Pesagems.Where(x => x.CorridaId == pesagem.CorridaId && x.CorredorId == pesagem.CorredorId).Count() == 0);
+                if (primeiraPesagem)
+                {
+                    corredor.PesoIcinial = pesagem.Peso;
+                    corredor.PesoObjetivo = RetornarPesoObjetivo(db.Corridas.Find(pesagem.CorridaId), pesagem.Peso); 
+                }
+                
                 db.Pesagems.Add(pesagem);
                 db.SaveChanges();
                 return RedirectToAction("MinhasCorridas", "Corrida");
@@ -80,6 +87,23 @@ namespace CorridaDePesso.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        private double RetornarPesoObjetivo(Corrida corrida, double pesoAtual)
+        {
+            double valorObjetivo = 0;
+            double fatorCalculado = 0;
+            if (corrida.Evolucao == TipoEvolucao.Percentual)
+                fatorCalculado = ((pesoAtual * corrida.FatorCalculo) / 100);
+            if (corrida.Evolucao == TipoEvolucao.ValorFixo)
+                fatorCalculado = corrida.FatorCalculo;
+            if (corrida.TipoCorrida == TipoCalculo.PerdaDePeso)
+                valorObjetivo = (pesoAtual - fatorCalculado);
+            else
+                valorObjetivo = (pesoAtual + fatorCalculado);
+
+            return valorObjetivo;
+        }
+
 
         protected override void Dispose(bool disposing)
         {
