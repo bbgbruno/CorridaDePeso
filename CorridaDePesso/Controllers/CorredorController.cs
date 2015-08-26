@@ -51,8 +51,8 @@ namespace CorridaDePesso.Controllers
                     {
                         Id = corredor.Id,
                         TituloCorrida = item.Titulo,
-
-                        PesoAtual = corredor.PesoAtual,
+   
+                     PesoAtual = corredor.PesoAtual,
                         PesoIcinial = corredor.PesoIcinial,
                         PesoObjetivo = corredor.PesoObjetivo,
                         Nome = corredor.Nome,
@@ -102,7 +102,7 @@ namespace CorridaDePesso.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(CorredorViewModel model)
         {
-
+            
 
             if (ModelState.IsValid)
             {
