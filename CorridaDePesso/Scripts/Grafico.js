@@ -153,7 +153,7 @@ $(document).ready(function () {
         var corridaId = $(this).attr('Value');
         $.get("/DashboardCorrida/GetPesagemCorredorGeral/", { id: corredorId, corridaId: corridaId }, CarregaGrafico, 'json');
 
-        $.get("/Pesagem/ListarPesagem/" + id, {}, CarregaListaPesagem,'html' );
+        $.get("/Pesagem/ListarPesagem/" + corredorId, {}, CarregaListaPesagem, 'html');
     });
 
 });
