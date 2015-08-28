@@ -5,10 +5,10 @@
 }
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Novo Corredor</h4>
         <hr />
@@ -36,12 +36,22 @@
                 @Html.ValidationMessageFor(model => model.urlImagemCorredor, "", new { @class = "text-danger" })
             </div>
         </div>
-        
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Participar Agora!" class="btn btn-success" />
-            </div>
+
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TipoAcompanhamento, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-12">
+            @Html.EnumDropDownListFor(model => model.TipoAcompanhamento, new { @class = "form-control chosen-select-deselect" })
+            <p>@Html.ValidationMessageFor(model => model.TipoAcompanhamento)</p>
         </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Participar Agora!" class="btn btn-success" />
+        </div>
+    </div>
     </div>
 }
 

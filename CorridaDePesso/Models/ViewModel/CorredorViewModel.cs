@@ -6,8 +6,19 @@ using System.Web;
 
 namespace CorridaDePesso.Models.ViewModel
 {
+   public enum TipoVerificacao
+    {
+        [Display(Name = "Peso Total")]
+        Peso = 0,
+        [Display(Name ="Percentual de Gordura" )]
+        PercentuaGordura = 2,
+        [Display(Name = "Circunferencia da Cintura")]
+        CircunferenciaContura
+        
+    }
     public class CorredorViewModel
     {
+
         public int Id { get; set; }
         public string TituloCorrida { get; set; }
         [Display(Name = "Peso Inicial")]
@@ -27,5 +38,7 @@ namespace CorridaDePesso.Models.ViewModel
         public virtual Corrida Corrida { get; set; }
         public int CorridaId { get; set; }
         public string Email { get; set; }
+        public TipoVerificacao TipoAcompanhamento { get; set; }
+        public double ValorObjetivo { get; set; }
     }
 }
