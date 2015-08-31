@@ -5,7 +5,7 @@
 }
 
 <br />
-<div class="row">
+<div class="row" style="height:100%">
     <div class="row col-md-3">
         <div class="corredores">
             @foreach (var item in Model)
@@ -17,11 +17,11 @@
                                 <img src="@item.urlImagemCorredor" alt="140X140" class="img-circle" style="width:80px">
                             </div>
                             <div class="col-md-8">
-                                <h4 style="margin-top:0; margin-bottom:0"> <a href="#" id="@item.Id" class="LinkCorredor">@item.Nome  </a></h4>
-                                <strong>Já Perdido: @item.PesoPerdido</strong><br />
+                                <h4 style="margin-top:0; margin-bottom:0"> <a href="#" id="@item.Id" value="@item.Corrida.Id" class="LinkCorredor">@item.Nome  </a></h4>
+                                <strong>Perdeu: @item.PesoPerdido</strong><br />
                                 <strong>Falta Perder : @item.FaltaPerder</strong><br />
                                 Peso Inicial: @item.PesoIcinial <br />
-                                Peso Objetivo: @item.PesoObjetivo <br />
+                                Meta: @item.PesoObjetivo <br />
                             </div>
                         </div>
                     </div>
@@ -42,10 +42,10 @@
 </div>
 <div class="row">
     <div class="row col-md-4">
-        </div>
-        <div id="pesagem" class="col-lg-8">
-        </div>
     </div>
+    <div id="pesagem" class="col-lg-8">
+    </div>
+</div>
 
 @section scripts{
     @Scripts.Render("~/bundles/Grafico")
