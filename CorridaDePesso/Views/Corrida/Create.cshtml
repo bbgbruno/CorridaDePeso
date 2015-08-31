@@ -140,7 +140,13 @@
                 <div class="col-md-4">
                     <input type="submit" value="Criar Corrida" class="btn btn-success" />
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-8">
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(model => model.Publica)
+                            Tornar minha corrida pública
+                        </label>
+                    </div>
                     <br />
                     <br />
                     @Html.ActionLink("Retornar", "Index", "Home")
