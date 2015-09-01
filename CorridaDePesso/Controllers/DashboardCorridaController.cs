@@ -32,7 +32,7 @@ namespace CorridaDePesso.Controllers
             var corredor = db.Corredors.Find(id);
 
             grafico.categories.Add(corredor.Nome);
-            grafico.categories.Add("Linha Guia");
+            grafico.categories.Add("Meta Semanal");
 
             var pesagems = (from peso in db.Pesagems
                             where peso.Corredor.Nome.Equals(corredor.Nome)
@@ -56,7 +56,7 @@ namespace CorridaDePesso.Controllers
 
             var corrida = db.Corridas.Find(corridaId);
             int dias = (corrida.DataFinal.Subtract(corrida.DataInicio)).Days;
-            var qtdePesagens = Math.Truncate((double)dias / 7);
+            var qtdePesagens = Math.Truncate((double)dias / 7)+2;
             var pesoPerder = (corredor.PesoIcinial - corredor.PesoObjetivo);
             var perdaConstante = (pesoPerder / qtdePesagens);
             qtdePesagens = qtdePesagens - pesagems.Count;
@@ -66,7 +66,7 @@ namespace CorridaDePesso.Controllers
                 if (i == 0)
                     valor.Add(new { y = corredor.PesoIcinial, type = "spline" });
                 else
-                    valor.Add(new { y = corredor.PesoIcinial - (perdaConstante * i), type = "spline" });
+                    valor.Add(new { y = Math.Round( corredor.PesoIcinial - (perdaConstante * i),1), type = "spline" });
             }
 
             ultimoPeso = pesagems.Last().Valor;
@@ -75,7 +75,7 @@ namespace CorridaDePesso.Controllers
 
             for (int i = 0; i < qtdePesagens; i++)
             {
-                valor.Add(new { y = ultimoPeso - (perdaConstante * (i + 1)), type = "spline" });
+                valor.Add(new { y = Math.Round( ultimoPeso - (perdaConstante * (i + 1)),1), type = "spline" });
             }
 
             var meta = new
