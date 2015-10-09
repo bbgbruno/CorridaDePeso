@@ -43,7 +43,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-2">
-                    <img src="~/Img/id53.jpg" alt="Responsive image" class="img-circle img-thumbnail img-responsive">
+                    <img src="~/Img/id532.jpg" alt="Responsive image" class="img-circle img-thumbnail img-responsive">
                 </div>
                 <div class="col-md-10">
                     <blockquote>
@@ -52,7 +52,7 @@
                             <br>foi divertido e muito saudável.
                         </h1>
                         <footer>
-                            Bruno Borges
+                            Yan Justino
                             <div id="ancor"></div>
                             <cite title="Source Title">Participou da corrida IVIA</cite>
                         </footer>
@@ -108,29 +108,30 @@
             </div>
         </div>
         <div id="create-new-run-area" class="row">
-            <a href="#" class="btn btn-lg btn-success">CLIQUE AQUI PARA CADASTRAR UMA NOVA CORRIDA AGORA</a>
+            @Html.ActionLink("CLIQUE AQUI PARA CADASTRAR UMA NOVA CORRIDA AGORA", "Create", "Corrida", new { @class = "btn btn-lg btn-success" })
         </div>
-        <div class="row" style="background-color: #e3e3e3; padding:15px">
-            <div class="col-md-2">
-                <img src="img/winner.png" class="img-responsive" alt="">
-            </div>
-            <div class="col-md-9">
-                <h1>
-                    COMO POSSO
-                    <br>
-                    <strong>PARTICIPAR DE UMA CORRIDA?</strong>
-                </h1>
-                <p>
-                    Para participar de uma corrida basta acessá-la e clicar no botão "quero participar". Informe o link ou o nome da corrida
-                    na caixa a baixo para accessar a corrida desejada.
-                </p>
-                <p>
-                    <div class="input-group input-group-lg">
-                        <span class="input-group-addon" id="sizing-addon1">http://www.corridadepeso.com.br/</span>
-                        <input id="find-run" type="text" placeholder="<digite aqui o link da corrida>">
-                    </div>
-                </p>
-            </div>
+
+        @*<div class="row" style="background-color: #e3e3e3; padding:15px">
+        <div class="col-md-2">
+            <img src="img/winner.png" class="img-responsive" alt="">
         </div>
+        <div class="col-md-9">
+            <h1>
+                COMO POSSO
+                <br>
+                <strong>PARTICIPAR DE UMA CORRIDA?</strong>
+            </h1>
+            <p>
+                Para participar de uma corrida basta acessá-la e clicar no botão "quero participar". Informe o link ou o nome da corrida
+                na caixa a baixo para accessar a corrida desejada.
+            </p>
+            <p>
+                <div class="input-group input-group-lg">
+                    <span class="input-group-addon" id="sizing-addon1">http://www.corridadepeso.com.br/</span>
+                    <input id="find-run" type="text" placeholder="<digite aqui o link da corrida>">
+                </div>
+            </p>
+        </div>
+    </div>*@
     </div>
 </div>
