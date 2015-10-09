@@ -16,7 +16,7 @@ namespace CorridaDePesso.Models.ViewModel
         CircunferenciaContura
         
     }
-    public class CorredorViewModel
+   public class CorredorViewModel
     {
 
         public int Id { get; set; }
@@ -38,6 +38,7 @@ namespace CorridaDePesso.Models.ViewModel
         public virtual Corrida Corrida { get; set; }
         public int CorridaId { get; set; }
         public string Email { get; set; }
+        [Display(Name = "Acompanhamento")]
         public TipoVerificacao TipoAcompanhamento { get; set; }
         public double ValorObjetivo { get; set; }
     }
