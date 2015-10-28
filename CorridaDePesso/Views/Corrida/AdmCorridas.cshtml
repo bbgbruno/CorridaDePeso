@@ -1,0 +1,62 @@
+﻿@using CorridaDePesso.Models;
+@model IEnumerable<CorridaDePesso.Models.CorridaViewModel>
+
+@{
+    ViewBag.Title = "Corridas Em Andamento";
+}
+<h2>CORRIDAS EM ANDAMENTO</h2>
+
+@foreach (var item in Model)
+{
+    <table class="table">
+        <tr>
+            <td colspan="3">
+                <h3>@item.Titulo</h3>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="row">
+                    <div class="corrida-andamento">
+                        <div class="col-lg-3">
+                            <h4 style="margin:0">
+                                <small>
+                                    começou em @item.DataInicial.ToString("dd/MM/yyyy")
+                                </small><br />
+                                <small>
+                                    termina em @item.DataFinal.ToString("dd/MM/yyyy")
+                                </small><br />
+                                @item.NumeroCorredores.ToString() <small>participantes</small>
+                            </h4>
+                        </div>
+                        @if (@item.CorredorLider != null && @item.CorredorLider.PesoPerdido > 0)
+                        {
+                            <div class="col-lg-1">
+                                <img src=@item.CorredorLider.urlImagemCorredor class="img-circle img-responsive" alt="" />
+                            </div>
+                            <div class="col-lg-3">
+                                <h4 style="margin:0">
+                                    @item.CorredorLider.Nome <br />
+                                    <small>está liderando a corrida</small> <br />
+                                    <small>pois perdeu <strong>@item.CorredorLider.PesoPerdido Kg</strong></small>
+                                </h4>
+                            </div>
+                        }
+                        <div class="col-lg-6">
+
+                            @Html.ActionLink("Excluir", "Delete", "Corrida", new { Id = item.Id }, new { @class = "btn btn-success" })
+                            @if (item.Publica)
+                            {
+                                @Html.ActionLink("Publicar", "MarcarPublica", "Corrida", new { Id = item.Id }, new { @class = "btn btn-warning" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Despublicar", "Despublica", "Corrida", new { Id = item.Id }, new { @class = "btn btn-warning" })
+                            }
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+}
