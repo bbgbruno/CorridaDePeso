@@ -21,6 +21,10 @@
                         <div class="col-lg-3">
                             <h4 style="margin:0">
                                 <small>
+                                    Email Gestor @item.Email
+                                </small><br />
+
+                                <small>
                                     começou em @item.DataInicial.ToString("dd/MM/yyyy")
                                 </small><br />
                                 <small>
@@ -45,13 +49,13 @@
                         <div class="col-lg-6">
 
                             @Html.ActionLink("Excluir", "Delete", "Corrida", new { Id = item.Id }, new { @class = "btn btn-success" })
-                            @if (item.Publica)
+                            @if (!item.Publica)
                             {
-                                @Html.ActionLink("Publicar", "MarcarPublica", "Corrida", new { Id = item.Id }, new { @class = "btn btn-warning" })
+                                @Html.ActionLink("Publicar", "MarcarPublicar", "Corrida", new { Id = item.Id }, new { @class = "btn btn-warning" })
                             }
                             else
                             {
-                                @Html.ActionLink("Despublicar", "Despublica", "Corrida", new { Id = item.Id }, new { @class = "btn btn-warning" })
+                                @Html.ActionLink("Despublicar", "MarcarDespublicar", "Corrida", new { Id = item.Id }, new { @class = "btn btn-warning" })
                             }
                         </div>
                     </div>

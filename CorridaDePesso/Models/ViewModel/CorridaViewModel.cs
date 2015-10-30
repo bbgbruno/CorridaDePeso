@@ -14,5 +14,6 @@ namespace CorridaDePesso.Models
         public Corredor CorredorLider { get; set; }
         public string Titulo { get; set; }
         public bool Publica { get; set; }
+        public string Email { get; set; }
     }
 }

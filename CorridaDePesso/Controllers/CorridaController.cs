@@ -93,6 +93,7 @@ namespace CorridaDePesso.Controllers
                     Id = item.Id,
                     Publica = item.Publica,
                     Titulo = item.Titulo,
+                    Email = item.EmailADM,
                     DataInicial = item.DataInicio,
                     DataFinal = item.DataFinal,
                     NumeroCorredores = Corredores.Where(x => x.Aprovado == true).Count(),
@@ -202,7 +203,20 @@ namespace CorridaDePesso.Controllers
             return View(corrida);
         }
 
-        public ActionResult MarcarPublica(int id)
+        public ActionResult MarcarPublicar(int id)
+        {
+            Corrida corrida = db.Corridas.Find(id);
+            if (corrida != null)
+            {
+                corrida.Publica = true;
+                db.Entry(corrida).State = EntityState.Modified;
+                db.SaveChanges();
+
+            }
+            return View();
+        }
+
+        public ActionResult MarcarDespublicar(int id)
         {
             Corrida corrida = db.Corridas.Find(id);
             if (corrida != null)
@@ -216,6 +230,7 @@ namespace CorridaDePesso.Controllers
         }
 
 
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -223,7 +238,7 @@ namespace CorridaDePesso.Controllers
             Corrida corrida = db.Corridas.Find(id);
             db.Corridas.Remove(corrida);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("AdmCorridas");
         }
 
         protected override void Dispose(bool disposing)
