@@ -38,12 +38,11 @@ namespace CorridaDePesso.Controllers
             }
         }
 
-        // GET: Corrida
         public ActionResult Index()
         {
             return View();
         }
-       
+
         public ActionResult MinhasCorridas()
         {
             var userId = UsuarioSessao().Id;
@@ -54,14 +53,13 @@ namespace CorridaDePesso.Controllers
             }
             else
             {
-                var corredor = db.Corredors.Include(p => p.Corridas ).Where(x => x.UserId == userId).FirstOrDefault();
+                var corredor = db.Corredors.Include(p => p.Corridas).Where(x => x.UserId == userId).FirstOrDefault();
                 return View("Corridas", RetornarListaDeCorridas(corredor.Corridas.ToList()));
             }
 
-           
+
         }
 
-        // GET: Link
         public ActionResult Link(string id)
         {
 
@@ -70,14 +68,18 @@ namespace CorridaDePesso.Controllers
             return View("Corridas", corridas);
         }
 
-
-        // GET: Corrida
         public ActionResult CorridasPublicas()
         {
 
-            var corridasPublicas = db.Corridas.Include(x => x.Participantes).Where( dado => dado.Publica == true).ToList();
+            var corridasPublicas = db.Corridas.Include(x => x.Participantes).Where(dado => dado.Publica == true).ToList();
             var corridas = RetornarListaDeCorridas(corridasPublicas);
             return View("Corridas", corridas);
+        }
+
+        public ActionResult AdmCorridas()
+        {
+            var corridas = RetornarListaDeCorridas(db.Corridas.Include(x => x.Participantes).ToList());
+            return View(corridas);
         }
 
         private IEnumerable<CorridaViewModel> RetornarListaDeCorridas(List<Corrida> corridasPublicas)
@@ -89,6 +91,7 @@ namespace CorridaDePesso.Controllers
                 yield return new CorridaViewModel
                 {
                     Id = item.Id,
+                    Publica = item.Publica,
                     Titulo = item.Titulo,
                     DataInicial = item.DataInicio,
                     DataFinal = item.DataFinal,
@@ -98,7 +101,6 @@ namespace CorridaDePesso.Controllers
             }
         }
 
-        // GET: Corrida/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -113,15 +115,11 @@ namespace CorridaDePesso.Controllers
             return View(corrida);
         }
 
-        // GET: Corrida/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Corrida/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -147,9 +145,9 @@ namespace CorridaDePesso.Controllers
 
                 }
 
-                var link = "http://www.corridadepeso.com.br/corrida/link/" + TratamentoString.CalcularMD5Hash(corrida.Titulo);  
+                var link = "http://www.corridadepeso.com.br/corrida/link/" + TratamentoString.CalcularMD5Hash(corrida.Titulo);
                 corrida.UserId = user.Id;
-                corrida.Link = TratamentoString.CalcularMD5Hash(corrida.Titulo);  
+                corrida.Link = TratamentoString.CalcularMD5Hash(corrida.Titulo);
                 db.Corridas.Add(corrida);
                 db.SaveChanges();
                 NotificaPorEmail.NotificarNovoCadastro(user.Email, password, user.Email, link);
@@ -160,7 +158,6 @@ namespace CorridaDePesso.Controllers
 
         }
 
-        // GET: Corrida/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -191,7 +188,6 @@ namespace CorridaDePesso.Controllers
             return View(corrida);
         }
 
-        // GET: Corrida/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -206,7 +202,20 @@ namespace CorridaDePesso.Controllers
             return View(corrida);
         }
 
-        // POST: Corrida/Delete/5
+        public ActionResult MarcarPublica(int id)
+        {
+            Corrida corrida = db.Corridas.Find(id);
+            if (corrida != null)
+            {
+                corrida.Publica = true;
+                db.Entry(corrida).State = EntityState.Modified;
+                db.SaveChanges();
+
+            }
+            return View();
+        }
+
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

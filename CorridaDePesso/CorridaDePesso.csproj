@@ -283,6 +283,7 @@
     <Content Include="Views\Corrida\Corridas.cshtml" />
     <Content Include="Views\Corredor\Perfil.cshtml" />
     <Content Include="Views\Pesagem\_listapesagem.cshtml" />
+    <Content Include="Views\Corrida\AdmCorridas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -12,7 +12,8 @@ namespace CorridaDePesso.Models
     public enum TipoConta
     {
         Administrador = 1,
-        Corredor = 2
+        Corredor = 2,
+        Super = 3
     }
 
     public class ApplicationUser : IdentityUser

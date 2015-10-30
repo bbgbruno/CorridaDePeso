@@ -19,16 +19,18 @@ namespace CorridaDePesso.Migrations
         {
 
             ApplicationDbContext db = new ApplicationDbContext();
-            var user = db.Users.Where(dado => dado.UserName == "bbgbruno@gmail.com").FirstOrDefault();
+            var user = db.Users.Where(dado => dado.UserName == "adm@adm.com.br").FirstOrDefault();
             if (user == null)
             {
                 var passwordHash = new PasswordHasher();
                 string password = passwordHash.HashPassword("master123");
                 user = new ApplicationUser()
                 {
-                    Email = "bbgbruno@gmail.com",
-                    UserName = "bbgbruno@gmail.com",
-                    PasswordHash = password
+                    Email = "adm@adm.com.br",
+                    UserName = "adm@adm.com.br",
+                    PasswordHash = password,
+                    TipoUsuario = TipoConta.Super,
+                    SecurityStamp = "adm@adm.com.br"                   
                 };
                 db.Users.Add(user);
                 db.SaveChanges();
